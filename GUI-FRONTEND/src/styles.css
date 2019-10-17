@@ -1,0 +1,206 @@
+/* You can add global styles to this file, and also import other style files */
+.ui-widget-content .ui-button, .ui-widget.ui-button, .ui-button{
+  background: #3f51b5 !important;
+  border: 1px solid #3f51b5 !important;
+}
+
+:host>>> .mat-progress-spinner circle, .mat-spinner circle {
+  stroke: white !important;
+}
+
+.spinner{
+  position: absolute;
+  top: 40%;
+  left: 47%;
+}
+
+
+.spinner-block{
+  margin: 0px;
+  padding: 0px;
+  position: inherit;
+  right: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: inherit;
+  z-index: 30001;
+  opacity: 0.8;
+}
+
+::ng-deep .ui-dropdown .ui-dropdown-trigger{
+  width: 2em !important;
+  background-color: #3f51b5 !important;
+  color: white;
+  text-align: center;
+}
+
+:host>>> .ui-growl{
+  top: 100px;
+}
+
+.header-page{
+  margin-bottom: 20px;
+  justify-content: center;
+  text-align: center;
+}
+
+
+.label-form{
+  margin-right: 10px;
+  width: 50%;
+}
+.ui-fileupload-row > div {
+  display: inline-table !important;
+  padding: .5em 1em !important;
+  vertical-align: bottom !important;
+}
+
+p-dropdown{
+  width: 100%;
+}
+
+p-inputMask{
+  width: 100%;
+}
+
+
+.form-style {
+  margin-top: 10px;
+}
+
+.boton-style{
+  width: 180px;
+  margin-right:4px;
+  margin-bottom: 5px;
+  margin-left: 0px !important;
+  color: red;
+}
+
+.content-form{
+  width: 80%;
+}
+
+.input-content{
+  display: flex !important;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.my-center-content {
+  text-align: center;
+  width: 100%;
+}
+.benef-deleted{
+  color: white !important;
+  background-color: red !important;
+}
+
+/* Landscape tablets and medium desktops */
+@media (min-width: 1200px) and (max-width: 1370px) {
+  .content-form{
+    width: 80%;
+  }
+
+  .boton-style{
+    width: 150px;
+    margin-right:4px !important;
+    margin-bottom: 5px !important;
+    margin-left: 0px !important;
+  }
+
+  .input-content{
+    display: flex !important;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+
+}
+
+/* Landscape tablets and medium desktops */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .content-form{
+    width: 80%;
+  }
+  .boton-style{
+    width: 150px;
+    margin-right:4px !important;
+    margin-bottom: 5px !important;
+    margin-left: 0px !important;
+  }
+  .input-content{
+    display: flex !important;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+}
+
+/* Portrait tablets and small desktops */
+@media (min-width: 768px) and (max-width: 991px) {
+  .content-form{
+    width: 100%;
+  }
+
+  .boton-style{
+    width: 100%;
+    margin-right:4px !important;
+    margin-bottom: 5px !important;
+    margin-left: 0px !important;
+  }
+  .input-content{
+    display: flex !important;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+}
+
+/* Landscape phones and portrait tablets */
+@media (max-width: 767px) {
+  .content-form{
+    width: 100%;
+  }
+  .boton-style{
+    width: 100%;
+    margin-right:4px !important;
+    margin-bottom: 5px !important;
+    margin-left: 0px !important;
+  }
+  .input-content{
+    display: block !important;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+
+}
+
+/* Portrait phones and smaller */
+@media (max-width: 480px) {
+  .content-form{
+    width: 100%;
+  }
+  .boton-style{
+    width: 100%;
+    margin-right:4px !important;
+    margin-bottom: 5px !important;
+    margin-left: 0px !important;
+  }
+  .input-content{
+    display: block !important;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+
+}
+
+.autocomplete-style{
+  font-size:18px;
+  float:right;
+  margin:10px 10px 0 0;
+}
+
+p-column{
+  width: 100px !important;
+}
+
+
+

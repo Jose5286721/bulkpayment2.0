@@ -1,0 +1,103 @@
+
+<div *ngIf="loading" class="spinner-block">
+  <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+</div>
+<p-growl [(value)]="msgs" life="5000"></p-growl>
+<mat-card>
+  <mat-card-header class="header-page">
+    <mat-card-title style="color: #3f51b5;"><h1>Perfil</h1></mat-card-title>
+  </mat-card-header>
+  <mat-list>
+    <mat-divider class="dividir"></mat-divider>
+  </mat-list>
+  <p-growl [(value)]="msgs" life="5000"></p-growl>
+
+  <mat-card-content fxLayout="column" fxLayoutAlign="center center">
+    <div class="content-form">
+      <form class="form-style" [formGroup]="perfilFormGroup" (ngSubmit)="saveProfile()">
+
+        <p-panel [header]="accionTitle">
+
+          <div class="ui-g ui-fluid">
+
+            <div class="ui-g-12 ui-md-4">
+              <p-fieldset legend="Administracion de perfil" [style]="{'height':'100%'}">
+
+                <div class="input-content">
+                  <label class="label-form">Nombre: </label>
+                  <input pInputText placeholder="Nombre"  type="text"
+                         name="usernameChr" formControlName="usernameChr">
+                </div>
+
+
+                <div class="input-content">
+                  <label class="label-form">Apellido: </label>
+                  <input pInputText placeholder="Apellido"  type="text"
+                         name="userlastnameChr" formControlName="userlastnameChr">
+                </div>
+
+                <div class="input-content">
+                  <label class="label-form">Cargo: </label>
+                  <input pInputText placeholder="Cargo"  type="text" [readonly]="true"
+                         name="userjobtitleChr" formControlName="userjobtitleChr">
+                </div>
+
+              </p-fieldset>
+            </div>
+            <div class="ui-g-12 ui-md-4">
+              <p-fieldset legend="Contraseña de Usuario" [style]="{'height':'100%'}">
+
+
+                <div class="input-content">
+                  <label class="label-form">Password: </label>
+                  <input (focusout)="updateValidators()" pPassword placeholder="Ingrese password"  type="password" matTooltip="El password debe tener al menos 8 caracteres, una letra mayuscula, una letra minuscula y un caracter especial "
+                         name="password" formControlName="password" promptLabel="Favor ingrese password" maxlength="255">
+                </div>
+
+                <div class="input-content">
+                  <label class="label-form">Confirmar Password: </label>
+                  <input pPassword placeholder="Confirmar password"  type="password"
+                         name="retrypasswordChr" formControlName="retrypasswordChr" promptLabel="Favor ingrese password">
+                </div>
+              </p-fieldset>
+            </div>
+
+            <div class="ui-g-12 ui-md-4" *ngIf="isFirmante">
+              <p-fieldset legend="Pin de Firmante" [style]="{'height':'100%'}">
+
+
+                <div class="input-content">
+                  <label class="label-form">Pin: </label>
+                  <input (focusout)="updateValidators()"  pPassword placeholder="Ingrese pin"  type="password"
+                         name="smspinChr" formControlName="smspinChr" promptLabel="Favor ingrese pin" maxlength="255">
+                </div>
+
+                <div class="input-content">
+                  <label class="label-form">Confirmar Pin: </label>
+                  <input pPassword placeholder="Confirmar pin"  type="password"
+                         name="retrysmspinChr" formControlName="retrysmspinChr" promptLabel="Favor ingrese pin">
+                </div>
+              </p-fieldset>
+            </div>
+
+          </div>
+        </p-panel>
+        <div style="justify-content: center; display: flex">
+          <mat-card-actions style="width: 100%; justify-content: center">
+            <button mat-raised-button color="primary" class="boton-style" type="submit" [disabled]="!perfilFormGroup.valid">
+              <mat-icon>save</mat-icon>
+              <strong>Guardar</strong>
+            </button>
+            <button *ngIf="isSelectedCompany$ | async" mat-raised-button color="primary" class="boton-style" (click)="navigateHome()" type="reset">
+              <mat-icon>cancel</mat-icon>
+              <strong>Cancelar</strong>
+            </button>
+          </mat-card-actions>
+        </div>
+      </form>
+
+    </div>
+  </mat-card-content>
+
+
+</mat-card>

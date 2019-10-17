@@ -1,0 +1,200 @@
+<div *ngIf="loading" class="spinner-block">
+  <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+</div>
+
+<mat-card>
+  <mat-card-header class="header-page">
+    <mat-card-title style="color: #3f51b5;">
+      <h1>Usuario</h1>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-list>
+    <mat-divider class="dividir"></mat-divider>
+  </mat-list>
+
+  <p-growl [(value)]="msgs" life="5000"></p-growl>
+
+  <mat-card-content fxLayout="column" fxLayoutAlign="center center">
+    <div class="content-form">
+      <form  class="form-style" [formGroup]="userFormGroup" (ngSubmit)="saveUser()">
+
+        <p-panel [header]="accionTitle">
+
+          <div class="ui-g ui-fluid">
+              <div class="ui-g-12 ui-md-6">
+
+                <div class="input-content" *ngIf="!isNewUsuario">
+                  <label class="label-form">Id: </label>
+                  <input pInputText name="iduserPk" id="iduserPk" formControlName="iduserPk" [readOnly]="true">
+                </div>
+
+
+                <div class="input-content">
+                  <label class="label-form required">Email: </label>
+                  <input pInputText placeholder="Ingrese Email del Usuario"  type="text" [required]="true"
+                         name="emailChr" id="emailChr" formControlName="emailChr" maxlength="100">
+                </div>
+
+
+                <div class="input-content">
+                  <label class="label-form required">Nombre: </label>
+                  <input pInputText placeholder="Ingrese nombre del Usuario"  type="text" [required]="true"
+                         name="usernameChr" id="usernameChr" formControlName="usernameChr" maxlength="30">
+                </div>
+
+
+                <div class="input-content">
+                  <label class="label-form required">Apellido: </label>
+                  <input pInputText placeholder="Ingrese Apellido del Usuario"  type="text" [required]="true"
+                         name="userlastnameChr" id="userlastnameChr" formControlName="userlastnameChr" maxlength="30">
+                </div>
+
+                <div class="input-content">
+                  <label class="label-form required">Cargo: </label>
+                  <input pInputText placeholder="Ingrese Cargo del Usuario"  type="text" [required]="true"
+                        name="userjobtitleChr" id="userjobtitleChr" formControlName="userjobtitleChr" maxlength="50">
+                </div>
+
+                <div class="input-content" *ngIf="!isNewUsuario">
+                  <label class="label-form">Estado:</label>
+                  <p-dropdown [options]="stateUser" formControlName="stateChr" [style]="{'width':'100%'}"
+                              placeholder="Seleccione Estado"
+                              name="stateChr"></p-dropdown>
+
+                </div>
+
+                <div class="input-content">
+                  <label class="label-form required">Teléfono: </label>
+                  <input pInputText placeholder="Ingrese número de teléfono"  type="text" [required]="true"
+                         name="phonenumber" formControlName="phonenumberChr" maxlength="50">
+                </div>
+
+                <div class="input-content" *ngIf="!isNewUsuario">
+                  <label class="label-form">Fecha Creación: </label>
+                  <p-inputMask mask="99/99/9999" formControlName="creationdateTim" name="creationdateTim"
+                               slotChar="dd/mm/yyyy" ></p-inputMask>
+
+                </div>
+
+                <div class="input-content" *ngIf="isSuperCompany()">
+                  <label class="label-form">Código Humano: </label>
+                  <input pInputText placeholder="Ingrese número de código humano"  type="text"
+                         name="codigoequipohumanoNum" formControlName="codigoequipohumanoNum" maxlength="50">
+                </div>
+
+                <div class="input-content"  *ngIf="isNewUsuario || isSuperUser">
+                  <label class="label-form " [class.required]="isNewUsuario" >Password temporal:</label>
+                  <input pPassword placeholder="Ingrese password"  type="password" matTooltip="El password debe tener al menos 8 caracteres, una letra mayuscula, una letra minuscula y un caracter especial "
+                         name="temporaryPasswordChr" formControlName="temporaryPasswordChr" promptLabel="Favor ingrese password" maxlength="255">
+                </div>
+
+              </div>
+
+              <div class="ui-g-12 ui-md-6">
+
+                <p-fieldset >
+                  <div class="input-content">
+                    <label class="label-form">Firmante Orden de Pago: </label>
+                    <p-checkbox formControlName="firmante" binary="true" name="activo" value="false"></p-checkbox>
+                  </div>
+
+                  <div class="input-content">
+                    <label class="label-form ">Firmar via SMS: </label>
+                    <p-checkbox formControlName="smssignNum" binary="true" name="smssignNum" value="true"
+                                (onChange)= "onChanceFirmarSms($event)"></p-checkbox>
+                  </div>
+
+                  <div [style.display]="rendererSmspinChr ? 'flex' : 'none'">
+                    <div class="input-content">
+                      <label class="label-form " [class.required]="isNewUsuario">PIN SMS: </label>
+                      <input type="password" pPassword placeholder="Ingrese PIN del Usuario" [required]="rendererSmspinChr && isNewUsuario"
+                            name="smspinChr" id="smspinChr" formControlName="smspinChr" [feedback] = "false">
+                    </div>
+                  </div>
+
+                </p-fieldset>
+
+                <p-fieldset>
+
+                  <div class="input-content">
+                    <label class="label-form" *ngIf="rendererSmspinChr">Notificar via SMS: </label>
+                    <p-checkbox formControlName="notifysmsNum" binary="true" name="notifysmsNum" value="true"  *ngIf="rendererSmspinChr" (onChange)=onChangeNotifysmsNum($event)></p-checkbox>
+                  </div>
+
+
+                  <div class="input-content">
+                    <label class="label-form">Notificar via E-MAIL: </label>
+                    <p-checkbox formControlName="notifyemailNum" binary="true" name="notifyemailNum" value="true"></p-checkbox>
+                  </div>
+
+                </p-fieldset>
+
+              </div>
+          </div>
+          <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-md-12">
+              <p-orderList [value]="empresaSeleccionada" *ngIf="isJustOneCompany()"
+                           header="Empresas"
+                           [responsive]="true" filterBy="companynameChr"
+                           filterPlaceholder="Buscar"
+                           [listStyle]="{'height':'300px'}" [style]="{'width':'50%'}">
+                <ng-template let-empresa pTemplate="item">
+                  <div class="ui-helper-clearfix">
+                    <div style="font-size:14px;margin:15px 0 0 0; text-align: center">
+                      {{empresa.companynameChr}}</div>
+                  </div>
+                </ng-template>
+              </p-orderList>
+              <p-fieldset legend="Empresas" [style]="{'height':'100%'}" *ngIf="!isJustOneCompany()">
+                <p-pickList [source]="listaEmpresa" [target]="empresaSeleccionada"
+                            sourceHeader="Empresas Disponibles"
+                            targetHeader="Empresas Seleccionadas"
+                            [responsive]="true" filterBy="companynameChr"
+                            dragdrop="true" sourceFilterPlaceholder="Buscar"
+                            targetFilterPlaceholder="Buscar"
+                            [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}"
+                            (onMoveToSource)="onMoveToSource($event)" >
+                  <ng-template let-empresa pTemplate="item">
+                    <div class="ui-helper-clearfix">
+                      <div style="font-size:14px;margin:15px 0 0 0; text-align: center">
+                        {{empresa.companynameChr}}</div>
+                    </div>
+                  </ng-template>
+                </p-pickList>
+              </p-fieldset>
+            </div>
+          </div>
+          <p-fieldset legend="Roles">
+
+            <p-dataTable [value]="rolesDt" [(selection)]="rolSelected" dataKey="idrolPk"
+                         [rows]="10" [paginator]="false" [responsive]="true" [resizableColumns]="true"
+                         [loading]="loading" loadingIcon="fa-spinner" emptyMessage="Sin elementos">
+              <p-column [style]="{'width':'38px'}" selectionMode="single"></p-column>
+              <p-column field="rolnameChr" header="Nombre"></p-column>
+              <p-column field="descriptionChr" header="Descripción"></p-column>
+              <p-footer>Total de Registros: {{totalRecords}}</p-footer>
+            </p-dataTable>
+            <p-paginator rows="10" [totalRecords]="totalRecords" pageLinkSize="1" (onPageChange)="paginate($event)"
+                         [rowsPerPageOptions]="[10]"></p-paginator>
+          </p-fieldset>
+
+        </p-panel>
+        <div style="justify-content: center; display: flex">
+          <mat-card-actions style="width: 100%; justify-content: center">
+            <button mat-raised-button color="primary" class="boton-style" type="submit" [disabled]="!userFormGroup.valid || rolSelected==null>
+              <mat-icon>save</mat-icon>
+              <b>Guardar</b>
+            </button>
+            <button mat-raised-button color="primary" class="boton-style" (click)="navigateUserList()" type="reset">
+              <mat-icon>cancel</mat-icon>
+              <b>Cancelar</b>
+            </button>
+          </mat-card-actions>
+        </div>
+      </form>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+
+

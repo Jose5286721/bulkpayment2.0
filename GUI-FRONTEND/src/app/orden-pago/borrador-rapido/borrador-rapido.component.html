@@ -1,0 +1,219 @@
+<div *ngIf="loading" class="spinner-block">
+  <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+</div>
+
+<mat-card>
+  <mat-card-header class="header-page">
+    <mat-card-title style="color: #3f51b5;"><h1>Borrador Rápido</h1></mat-card-title>
+  </mat-card-header>
+  <mat-list>
+    <mat-divider class="dividir"></mat-divider>
+  </mat-list>
+
+  <p-growl [(value)]="msgs" life="5000"></p-growl>
+  <mat-card-content fxLayout="column" fxLayoutAlign="center center">
+    <div class="content-form">
+      <form class="form-style" [formGroup]="draftFormGroup" (ngSubmit)="saveDraft()">
+        <p-panel [header]="accionTitle">
+
+          <!--PASO 1-->
+          <p-fieldset [style]="{'margin-top':'10px'}">
+            <p-header>
+              <b>Paso 1. Información Básica</b>
+            </p-header>
+
+
+            <div class="ui-g ui-fluid">
+              <div class="ui-g-12 ui-md-6" *ngIf="isSuperCompany()">
+                <div class="input-content">
+                  <label class="label-form required">Empresa</label>
+                  <p-autoComplete [suggestions]="filteredCompany" #empresa formControlName="company"
+                                  (completeMethod)="filterCompany($event)" [size]="50" field="companynameChr"
+                                  name="companynameChr"
+                                  [minLength]="1" placeholder="Seleccione Empresa" (onSelect)="clearWorkflow($event)"
+                                  [dropdown]="isNewDraft"
+                                  [readonly]="!isNewDraft" [required]="superCompany">
+                    <ng-template let-empresa pTemplate="item">
+                      <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
+                        <div class="autocomplete-style">{{empresa.companynameChr}}</div>
+                      </div>
+                    </ng-template>
+                  </p-autoComplete>
+                </div>
+              </div>
+              <div class="ui-g-12 ui-md-6">
+                <div class="input-content">
+                  <label class="label-form required">Tipo Orden de Pago</label>
+                  <p-autoComplete [suggestions]="filteredPaymentOrderType" [dropdown]="true"
+                                  formControlName="paymentordertype"
+                                  (completeMethod)="filterPaymentOrderType($event)" [size]="50" field="nameChr"
+                                  name="nameChr"
+                                  [minLength]="1" placeholder="Seleccione Tipo Orden de Pago">
+                    <ng-template let-paymentOrderType pTemplate="item">
+                      <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
+                        <div class="autocomplete-style">{{paymentOrderType.nameChr}}</div>
+                      </div>
+                    </ng-template>
+                  </p-autoComplete>
+                </div>
+              </div>
+              <div class="ui-g-12 ui-md-6">
+                <div class="input-content">
+                  <label class="label-form">Descripción </label>
+                  <textarea pInputTextarea placeholder="Ingrese descripción" name="descripcion" [rows]="8"
+                            formControlName="descriptionChr"
+                            maxlength="100">
+                  </textarea>
+                </div>
+              </div>
+              <div class="ui-g-12 ui-md-6">
+                <div [style.display]="recurrenciaNum ? 'none' : 'flex'">
+                  <div class="input-content">
+                    <label class="label-form required">Fecha de pago</label>
+                    <div fxLayout="column" class="input-content">
+                      <p-inputMask mask="99/99/9999" name="paiddateTim" formControlName="paiddateTim"
+                                   slotChar="dd/mm/yyyy" [required]="!recurrenciaNum"></p-inputMask>
+                      <mat-hint *ngIf="this.draftFormGroup.controls['paiddateTim'].hasError('forbiddenDate')" [ngStyle]="{'color': 'red','font-size':'12px'}" >
+                        *La fecha debe ser mayor o igual al actual
+                      </mat-hint>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </p-fieldset>
+          <p-fieldset [style]="{'margin-top':'10px'}">
+            <p-header>
+              <strong>Paso 2. Flujo de aprobación</strong>
+            </p-header>
+            <div class="ui-g ui-fluid">
+              <div class="input-content" style="align-items: center">
+                <button mat-raised-button color="primary" type="button" [disabled]="!empresaSeleccionada()"
+                        (click)="obtenerWorkflows()" pTooltip="Click para seleccionar workflow"
+                        tooltipPosition="bottom">
+                  <strong>Workflow</strong>
+                </button>
+                <ng-container *ngIf="!empresaSeleccionada();else selectWorkflow">
+                  <span style="margin-left: 10px">{{MESSAGES.SIN_EMPRESA}}</span>
+                </ng-container>
+                <ng-template #selectWorkflow>
+                  <ng-container *ngIf="draftFormGroup === null || draftFormGroup.value.workflow === null;else ok">
+                    <span style="margin-left: 10px">{{MESSAGES.SIN_WORKFLOW}}</span>
+                  </ng-container>
+                </ng-template>
+                <ng-template #ok>
+                  <mat-list>
+                    <mat-list-item>
+                      <h2 mat-line><strong>{{draftFormGroup.value.workflow.workflownameChr}}</strong></h2>
+                      <p mat-line style="color: #555555"> {{draftFormGroup.value.workflow.descriptionChr}}</p>
+                    </mat-list-item>
+                  </mat-list>
+                </ng-template>
+              </div>
+            </div>
+          </p-fieldset>
+          <p-fieldset [style]="{'margin-top':'10px'}">
+            <p-header>
+              <strong>Paso 3. Carga de Beneficiarios</strong>
+            </p-header>
+            <div class="ui-g ui-fluid">
+              <div class="ui-g-12 ui-md-6">
+                <div class="input-content">
+                  <label class="label-form">Total Beneficiarios </label>
+                  <input pInputText type="number" [readonly]="true" formControlName="totalBeneficiary">
+                </div>
+              </div>
+              <div class="ui-g-12 ui-md-6">
+                <div class="input-content">
+                  <label class="label-form">Monto total </label>
+                  <input pInputText placeholder="0"  type="number" name="monto" [readonly]="true" formControlName="montoTotal">
+                </div>
+              </div>
+              <p-dataTable #dt [value]="beneficiariosDt" [rows]="10" [paginator]="false" [responsive]="true" (onEditComplete)="updateValues()"
+                           [resizableColumns]="true" [immutable]="false" [loading]="loading" [editable]="true"
+                           loadingIcon="fa-spinner" emptyMessage="Sin elementos" >
+
+                <p-column field="subscriberciChr" [editable]="true" header="CI"></p-column>
+                <p-column field="phonenumberChr" [editable]="true" header="Cuenta" ></p-column>
+                <p-column field="amount" [editable]="true" header="Monto"></p-column>
+                <p-column header="Agregar">
+                  <ng-template let-beneficiario="rowData" let-i="rowIndex" pTemplate="body">
+                    <button pButton type="button"  (click)="agregarBeneficiario(beneficiario)" icon="fa-plus-square">
+                      </button>
+                  </ng-template>
+                </p-column>
+                <p-column header="Eliminar">
+                  <ng-template let-beneficiario="rowData" let-i="rowIndex" pTemplate="body">
+                    <button pButton type="button"  (click)="borrarBeneficiario(beneficiario)"
+                            icon="fa-close"></button>
+                  </ng-template>
+                </p-column>
+              </p-dataTable>
+            </div>
+
+          </p-fieldset>
+          <div style="justify-content: center; display: flex">
+            <mat-card-actions style="width: 100%; justify-content: center">
+              <button mat-raised-button color="primary" class="boton-style" type="submit"
+                      [disabled]="!draftFormGroup.valid || (beneficiariosDt.length==0) || !isValidBeneficiaries()">
+                <mat-icon>save</mat-icon>
+                <strong>Guardar</strong>
+              </button>
+              <button mat-raised-button color="primary" class="boton-style" type="reset" (click)="navigateDraftList()">
+                <mat-icon>cancel</mat-icon>
+                <strong>Cancelar</strong>
+              </button>
+            </mat-card-actions>
+          </div>
+
+        </p-panel>
+      </form>
+    </div>
+  </mat-card-content>
+</mat-card>
+<p-dialog header="Workflows" [(visible)]="workflowDisplay" [modal]="true" [responsive]="true" appendTo="body"
+          [closable]="false">
+  <p-fieldset [style]="{'height':'100%'}">
+    <p-header>
+      <strong>Seleccione Workflow</strong>
+    </p-header>
+
+    <div>
+      <p-autoComplete [suggestions]="filteredWorkflow" [dropdown]="true" #workflowAutocomplete
+                      (completeMethod)="filterWorkflow($event)" field="workflownameChr" name="workflownameChr"
+                      [minLength]="1" placeholder="Seleccione Workflow" appendTo="body"
+                      (onSelect)="obtenerFirmantes(workflowAutocomplete)">
+        <ng-template let-workflow pTemplate="item">
+          <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
+            <div class="autocomplete-style">{{workflow.workflownameChr}}</div>
+          </div>
+        </ng-template>
+      </p-autoComplete>
+    </div>
+    <div *ngIf="workflowAutocomplete != null && workflowAutocomplete.value != null" style="margin-top: 10px">
+      {{workflowAutocomplete.value.descriptionChr}}
+    </div>
+
+    <div style="margin-top: 10px">
+      <p-dataTable [value]="firmantesDt" [responsive]="true" [resizableColumns]="true"
+                   [loading]="loading" loadingIcon="fa-spinner" emptyMessage="Sin elementos" scrollable="true"
+                   scrollHeight="200px">
+
+        <p-column field="step" header="Orden"></p-column>
+        <p-column field="usernameChr" header="Usuario"></p-column>
+
+      </p-dataTable>
+    </div>
+
+  </p-fieldset>
+
+  <p-footer>
+    <button type="button" pButton icon="fa-check" (click)="seleccionarWorkflow(workflowAutocomplete)"
+            label="Seleccionar"
+            #selectButton></button>
+    <button type="button" pButton icon="fa-close" (click)="cancelarSeleccionWorkflow()" label="Limpiar"></button>
+    <button type="button" pButton icon="fa-close" (click)="workflowDisplay = !workflowDisplay"
+            label="Cancelar"></button>
+  </p-footer>
+</p-dialog>
+

@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Main-Class: py.com.spm.csvimporter.CSVImport
+Class-Path: 
+

@@ -1,0 +1,53 @@
+
+<div *ngIf="loading" class="spinner-block">
+  <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+</div>
+
+<mat-card>
+  <mat-card-header class="header-page">
+    <mat-card-title style="color: #3f51b5;"><h1>Recuperación de Contraseña</h1></mat-card-title>
+  </mat-card-header>
+  <mat-list>
+    <mat-divider class="dividir"></mat-divider>
+  </mat-list>
+  <p-growl [(value)]="msgs" life="5000"></p-growl>
+
+  <mat-card-content fxLayout="column" fxLayoutAlign="center center">
+    <div class="content-form">
+      <form class="form-style" [formGroup]="changePassGroup" (ngSubmit)="changeUserPassword()">
+
+        <p-panel header="Recuperacion de contrasenha">
+          <div class="ui-g ui-fluid">
+
+          <div class="ui-g-12 ui-md-4">
+              <p-fieldset legend="Contraseña de Usuario" [style]="{'height':'100%'}">
+
+                <div class="input-content">
+                  <label class="label-form">Password: </label>
+                  <input pPassword placeholder="Ingrese password"  type="password" matTooltip="El password debe tener al menos 8 caracteres, una letra mayuscula, una letra minuscula y un caracter especial "
+                         name="password" formControlName="password" promptLabel="Favor ingrese password" maxlength="255">
+                </div>
+
+                <div class="input-content">
+                  <label class="label-form">Confirmar Password: </label>
+                  <input pPassword placeholder="Confirmar password"  type="password"
+                         name="retrypasswordChr" formControlName="retrypasswordChr" promptLabel="Favor ingrese password">
+                </div>
+              </p-fieldset>
+            </div>
+          </div>
+        </p-panel>
+        <div style="justify-content: center; display: flex">
+          <mat-card-actions style="width: 100%; justify-content: center">
+            <button mat-raised-button color="primary" class="boton-style" type="submit" [disabled]="!changePassGroup.valid">
+              <mat-icon>save</mat-icon>
+              <b>Guardar</b>
+            </button>
+          </mat-card-actions>
+        </div>
+      </form>
+
+    </div>
+  </mat-card-content>
+
+</mat-card>

@@ -1,0 +1,435 @@
+<div *ngIf="loading" class="spinner-block">
+  <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+</div>
+
+<mat-card>
+  <mat-card-header class="header-page">
+    <mat-card-title style="color: #3f51b5;"><h1>Borradores</h1></mat-card-title>
+  </mat-card-header>
+  <mat-list>
+    <mat-divider class="dividir"></mat-divider>
+  </mat-list>
+
+  <p-growl [(value)]="msgs" life="5000"></p-growl>
+
+  <mat-card-content fxLayout="column" fxLayoutAlign="center center">
+    <div class="content-form">
+      <form class="form-style" [formGroup]="draftFormGroup" (ngSubmit)="saveDraft()">
+        <p-panel [header]="accionTitle">
+
+            <!--PASO 1-->
+            <p-fieldset [style]="{'margin-top':'10px'}">
+              <p-header>
+                <b>Paso 1. Información Básica</b>
+              </p-header>
+
+              <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-md-6" *ngIf="isSuperCompany()">
+                  <div class="input-content">
+                  <label class="label-form required">Empresa</label>
+                  <p-autoComplete [suggestions]="filteredCompany"  formControlName="company"
+                                  (completeMethod)="filterCompany($event)" [size]="50" field="companynameChr" name="companynameChr"
+                                  [minLength]="1" placeholder="Seleccione Empresa"  (onSelect)="clearWorkflow($event)" [dropdown]="isNewDraft"
+                                  [readonly]="!isNewDraft" [required]="superCompany">
+                    <ng-template let-empresa pTemplate="item">
+                      <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
+                        <div class="autocomplete-style">{{empresa.companynameChr}}</div>
+                      </div>
+                    </ng-template>
+                  </p-autoComplete>
+                </div>
+                </div>
+
+                <div class="ui-g-12 ui-md-6" *ngIf="!isNewDraft">
+                  <div class="input-content">
+                  <label class="label-form">Id</label>
+                  <input pInputText type="number" name="iddraftPk" [readonly]="true" formControlName="iddraftPk">
+                </div>
+                </div>
+
+                <div class="ui-g-12 ui-md-6">
+                  <div class="input-content">
+                  <label class="label-form required">Tipo Orden de Pago</label>
+                  <p-autoComplete [suggestions]="filteredPaymentOrderType" [dropdown]="true" formControlName="paymentordertype"
+                                  (completeMethod)="filterPaymentOrderType($event)" [size]="50" field="nameChr" name="nameChr"
+                                  [minLength]="1" placeholder="Seleccione Tipo Orden de Pago" >
+                    <ng-template let-paymentOrderType pTemplate="item">
+                      <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
+                        <div class="autocomplete-style">{{paymentOrderType.nameChr}}</div>
+                      </div>
+                    </ng-template>
+                  </p-autoComplete>
+                </div>
+                </div>
+              </div>
+
+              <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-md-6">
+                  <div class="input-content" *ngIf="!isNewDraft">
+                    <label class="label-form">Estado:</label>
+                    <p-dropdown [options]="stateDraft" formControlName="stateChr" [style]="{'width':'100%'}"
+                                placeholder="Seleccione Estado"
+                                name="stateChr"></p-dropdown>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-md-6">
+                  <div class="input-content">
+                  <label class="label-form">Descripción </label>
+                  <textarea pInputTextarea placeholder="Ingrese descripción" name="descripcion" [rows]="8" formControlName="descriptionChr"
+                            maxlength="100">
+                  </textarea>
+                </div>
+                </div>
+              </div>
+
+            </p-fieldset>
+
+            <!--PASO 2-->
+            <p-fieldset [style]="{'margin-top':'10px'}">
+              <p-header>
+                <b>Paso 2. Orden de pago programada o recurrente</b>
+              </p-header>
+
+              <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-md-6">
+                  <div class="input-content">
+                <label class="label-form">Recurrencia </label>
+                <p-checkbox binary="true" name="recurrentNum" value="true" (onChange)="onChangeRecurrentNum($event)"
+                            formControlName="recurrentNum"></p-checkbox>
+              </div>
+                </div>
+                <div class="ui-g-12 ui-md-6">
+                  <div [style.display]="recurrenciaNum ? 'none' : 'flex'">
+                    <div class="input-content">
+                      <label class="label-form required">Fecha de pago</label>
+                      <div fxLayout="column">
+                        <p-inputMask id="paiddateTim" mask="99/99/9999" name="paiddateTim" formControlName="paiddateTim"
+                                      slotChar="dd/mm/yyyy" [required]="!recurrenciaNum" ></p-inputMask>
+                        <mat-hint *ngIf="this.draftFormGroup.controls['paiddateTim'].hasError('forbiddenDate')" [ngStyle]="{'color': 'red','font-size':'12px'}" >
+                          *La fecha debe ser mayor o igual al actual
+                        </mat-hint>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-md-6">
+                  <div [style.display]="recurrenciaNum ? 'flex' : 'none'">
+
+                    <div class="input-content">
+                      <label class="label-form required">Desde</label>
+                      <p-inputMask mask="99/99/9999" name="fromdateTim" formControlName="fromdateTim"
+                                   slotChar="dd/mm/yyyy" [required]="recurrenciaNum"></p-inputMask>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="ui-g-12 ui-md-6">
+                  <div [style.display]="recurrenciaNum ? 'flex' : 'none'">
+                    <div class="input-content">
+                      <label class="label-form required">Hasta</label>
+                      <p-inputMask mask="99/99/9999" name="todateTim" formControlName="todateTim"
+                                   slotChar="dd/mm/yyyy" [required]="recurrenciaNum" ></p-inputMask>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="ui-g-12 ui-md-6">
+                  <div [style.display]="recurrenciaNum ? 'flex' : 'none'">
+                    <div class="input-content">
+                      <label class="label-form required">Generación:</label>
+                      <input pInputText placeholder="1"  type="number" name="monto" [required]="recurrenciaNum" formControlName="generateDayNum">
+                    </div>
+                    <label class="label-form">de cada mes</label>
+                  </div>
+                </div>
+
+              </div>
+
+
+            </p-fieldset>
+
+            <!--PASO 3-->
+            <p-fieldset [style]="{'margin-top':'10px'}">
+              <p-header>
+                <b>Paso 3. Flujo de aprobación</b>
+              </p-header>
+              <div class="ui-g ui-fluid">
+                <div class="input-content" style="align-items: center">
+                <button mat-raised-button color="primary" type="button" [disabled]="!empresaSeleccionada()"
+                        (click)="obtenerWorkflows()" pTooltip="Click para seleccionar workflow" tooltipPosition="bottom">
+                  <b>Workflow</b>
+                </button>
+                <ng-container *ngIf="!empresaSeleccionada();else selectWorkflow">
+                  <span style="margin-left: 10px">{{MESSAGES.SIN_EMPRESA}}</span>
+                </ng-container>
+                <ng-template #selectWorkflow>
+                  <ng-container *ngIf="draftFormGroup === null || draftFormGroup.value.workflow === null;else ok">
+                    <span style="margin-left: 10px">{{MESSAGES.SIN_WORKFLOW}}</span>
+                  </ng-container>
+                </ng-template>
+                <ng-template #ok>
+                  <mat-list>
+                    <mat-list-item>
+                      <h2 mat-line><b>{{draftFormGroup.value.workflow.workflownameChr}}</b></h2>
+                      <p mat-line style="color: #555555"> {{draftFormGroup.value.workflow.descriptionChr}}</p>
+                    </mat-list-item>
+                  </mat-list>
+                </ng-template>
+              </div>
+              </div>
+
+            </p-fieldset>
+
+            <!--PASO 4-->
+            <p-fieldset [style]="{'margin-top':'10px'}">
+              <p-header>
+                <b>Paso 4. Notificaciones</b>
+              </p-header>
+
+              <div class="input-content">
+                <label class="label-form">Pago benificiarios </label>
+                <p-checkbox binary="true" name="notifybenficiaryNum" value="true" formControlName="notifybenficiaryNum"></p-checkbox>
+              </div>
+
+              <div class="input-content">
+                <label class="label-form">Solicitud aprobación a Firmantes </label>
+                <p-checkbox binary="true" name="notifysignerNum" value="true" formControlName="notifysignerNum"></p-checkbox>
+              </div>
+
+              <div class="input-content">
+                <label class="label-form">Generación a firmantes </label>
+                <p-checkbox binary="true" name="notifygenNum" value="true" formControlName="notifygenNum"></p-checkbox>
+              </div>
+
+              <div class="input-content">
+                <label class="label-form">Cancelación a firmantes </label>
+                <p-checkbox binary="true" name="notifycancelNum" value="true" formControlName="notifycancelNum"></p-checkbox>
+              </div>
+
+            </p-fieldset>
+
+            <!--PASO 5-->
+            <p-fieldset [style]="{'margin-top':'10px'}">
+              <p-header>
+                <strong>Paso 5. Importación de beneficiarios</strong>
+              </p-header>
+              <div class="ui-g ui-fluid">
+
+                <div class="ui-g-12 ui-md-6">
+                  <div class="input-content">
+                    <button mat-raised-button color="primary" type="button" (click)="templateDisplay = !templateDisplay"
+                            [disabled]="!empresaSeleccionada() || draftFormGroup.value.workflow === null">
+                      <strong>Cargar Beneficiarios</strong>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="ui-g-12 ui-md-6">
+                  <div class="input-content">
+                    <label class="label-form">Total Beneficiarios </label>
+                    <input pInputText  type="number" [readonly]="true" formControlName="totalBeneficiary">
+                  </div>
+                </div>
+              </div>
+
+            </p-fieldset>
+
+            <!--PASO 6-->
+            <p-fieldset [style]="{'margin-top':'10px'}">
+            <p-header>
+              <strong>Paso 6. Beneficiarios y montos a pagar</strong>
+            </p-header>
+              <div class="ui-g ui-fluid">
+              <div class="ui-g-12 ui-md-6">
+                <div class="input-content" *ngIf="canviewCompanyCredit()">
+                  <label class="label-form">Saldo Disponible </label>
+                  <input pInputText  type="text" name="saldo" [readonly]="true"
+                         formControlName="saldo">
+                </div>
+              </div>
+                <div class="ui-g-12 ui-md-6">
+                <div class="input-content">
+                  <label class="label-form">Monto total </label>
+                  <input pInputText placeholder="0"  type="number" name="monto" [readonly]="true" formControlName="montoTotal">
+                </div>
+              </div>
+                <p-dataTable *ngIf="!isNewDraft" [value]="actualBeneficiaries" [rows]="10" [responsive]="true"
+                           [resizableColumns]="true" [paginator]="false" [rowStyleClass]="isDeleted"
+                             [loading]="loading" loadingIcon="fa-spinner" emptyMessage="La carga de beneficiarios aún no ha terminado">
+                  <p-header>Beneficiarios</p-header>
+                  <p-column field="phonenumberChr" header="Número" [style]="{'width': '200px'}"></p-column>
+                  <p-column  field="amount" header="Monto" [style]="{'width': '200px'}"></p-column>
+                  <p-column [style]="{'width': '100px'}">
+                  <ng-template pTemplate="header">
+                    Acción
+                  </ng-template>
+                  <ng-template let-beneficiario="rowData" pTemplate="body">
+                    <div class="my-center-content">
+                      <button pButton icon="fa-close" style="background-color: #3f51b5;" (click)="deleteBeneficiario(beneficiario)"
+                      type="button"></button>
+                    </div>
+                  </ng-template>
+                </p-column>
+              </p-dataTable>
+                <div class="my-center-content">
+                  <p-paginator rows="10" [totalRecords]="totalRecords" pageLinkSize="1" (onPageChange)="paginate($event)"
+                             [rowsPerPageOptions]="[10]"></p-paginator>
+                </div>
+
+
+
+                <p-dataTable  [value]="draftFormGroup.value.beneficiaries" [rows]="10"  [responsive]="true"
+                             [resizableColumns]="true" [paginator]="true"
+                              loadingIcon="fa-spinner" emptyMessage="Sin elementos">
+                  <p-header class="ui-datatable-header">Beneficiarios nuevos</p-header>
+
+                  <p-column field="phonenumberChr" header="Número" [style]="{'width': '200px'}"></p-column>
+                  <p-column field="amount" header="Monto" [style]="{'width': '200px'}"></p-column>
+                  <p-column [style]="{'width': '100px'}">
+                    <ng-template pTemplate="header">
+                      Acción
+                    </ng-template>
+                    <ng-template let-beneficiario="rowData" pTemplate="body">
+                      <div class="my-center-content">
+                        <button pButton icon="fa-close" style="background-color: #3f51b5;" (click)="deleteBeneficiario(beneficiario)"
+                                type="button"></button>
+                      </div>
+                    </ng-template>
+                  </p-column>
+                </p-dataTable>
+
+              </div>
+
+
+          </p-fieldset>
+
+          <div style="justify-content: center; display: flex">
+            <mat-card-actions style="width: 100%; justify-content: center">
+              <button mat-raised-button color="primary" class="boton-style" type="submit" [disabled]="!draftFormGroup.valid">
+                <mat-icon>save</mat-icon>
+                <strong>Guardar</strong>
+              </button>
+              <button mat-raised-button color="primary" class="boton-style"  type="reset" (click)="navigateDraftList()">
+                <mat-icon>cancel</mat-icon>
+                <strong>Cancelar</strong>
+              </button>
+            </mat-card-actions>
+          </div>
+        </p-panel>
+      </form>
+    </div>
+
+  </mat-card-content>
+
+  <p-confirmDialog appendTo="body" [responsive]="true" showEffect="fade" [closable]="false" #confirmarEliminacion>
+    <p-footer>
+      <button type="button" pButton icon="fa-check" label="Confirmar" (click)="confirmarEliminacion.accept()"></button>
+      <button type="button" pButton icon="fa-close" label="Cancelar" (click)="confirmarEliminacion.reject()"></button>
+    </p-footer>
+  </p-confirmDialog>
+</mat-card>
+
+<p-dialog header="Workflows" [(visible)]="workflowDisplay" [modal]="true" [responsive]="true"  appendTo="body" [closable]="false">
+    <p-fieldset [style]="{'height':'100%'}">
+      <p-header>
+        <strong>Seleccione Workflow</strong>
+      </p-header>
+
+        <div>
+          <p-autoComplete [suggestions]="filteredWorkflow" [dropdown]="true" #workflowAutocomplete
+                        (completeMethod)="filterWorkflow($event)" field="workflownameChr" name="workflownameChr"
+                        [minLength]="1" placeholder="Seleccione Workflow" appendTo="body"
+                          (onSelect)="obtenerFirmantes(workflowAutocomplete)">
+            <ng-template let-workflow pTemplate="item">
+              <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
+                <div class="autocomplete-style">{{workflow.workflownameChr}}</div>
+              </div>
+            </ng-template>
+          </p-autoComplete>
+        </div>
+        <div *ngIf="workflowAutocomplete != null && workflowAutocomplete.value != null" style="margin-top: 10px">
+            {{workflowAutocomplete.value.descriptionChr}}
+        </div>
+
+        <div style="margin-top: 10px">
+          <p-dataTable [value]="firmantesDt" [responsive]="true" [resizableColumns]="true"
+                       [loading]="loading" loadingIcon="fa-spinner" emptyMessage="Sin elementos" scrollable="true" scrollHeight="200px">
+
+          <p-column field="step" header="Orden"></p-column>
+          <p-column field="usernameChr" header="Usuario"></p-column>
+
+        </p-dataTable>
+        </div>
+
+    </p-fieldset>
+
+  <p-footer>
+    <button type="button" pButton icon="fa-check" (click)="seleccionarWorkflow(workflowAutocomplete)" label="Seleccionar"
+    #selectButton></button>
+    <button type="button" pButton icon="fa-close" (click)="cancelarSeleccionWorkflow()" label="Limpiar"></button>
+    <button type="button" pButton icon="fa-close" (click)="workflowDisplay = !workflowDisplay" label="Cancelar"></button>
+  </p-footer>
+</p-dialog>
+
+<p-dialog header="Beneficiarios" [(visible)]="templateDisplay" [modal]="true" [responsive]="true" appendTo="body" [closable]="false">
+  <p-growl [(value)]="msgs" life="5000"></p-growl>
+
+  <div fxLayout="row" fxLayoutAlign="space-between center" >
+        <p-fieldset [style]="{'width':'50%'}">
+          <p-header>
+            <strong>Agregar archivo</strong>
+          </p-header>
+          <p-fileUpload name="file[]" #fileUpload [multiple]="false" (onSelect)="selectFile($event)" [showUploadButton]="false"
+                      [customUpload]="true" [showCancelButton]="false"
+                      chooseLabel="Seleccionar CSV" [accept]="csvmimetype">
+          <ng-template pTemplate="content">
+            <ul *ngIf="uploadedFiles.length">
+              <li *ngFor="let file of uploadedFiles">{{file.name}}-{{file.size}} bytes</li>
+            </ul>
+          </ng-template>
+          </p-fileUpload>
+        </p-fieldset>
+        <p-fieldset [style]="{'width':'50%'}" fxLayout="column">
+          <p-header>
+            <strong>Ejemplos</strong>
+          </p-header>
+          <button mat-raised-button color="primary" class="boton-style" (click)="downloadExample(shortExample)">Plantilla Corta</button>
+          <button mat-raised-button color="primary" class="boton-style" (click)="downloadExample(completeExample)">Plantilla Larga</button>
+        </p-fieldset>
+    </div>
+    <div style="margin-top: 10px">
+      <p-dataTable  [value]="preBeneficiaries" [responsive]="true" [resizableColumns]="true" scrollable="false" scrollHeight="100%"
+                   [loading]="loading" loadingIcon="fa-spinner" emptyMessage="Sin elementos" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20]" [globalFilter]="gb"
+                   [(selection)]="selectBeneficiaries" dataKey="phonenumberChr" [headerCheckboxToggleAllPages]="true">
+        <p-header>
+          <div style="text-align:right">
+            <em class="fa fa-search" style="margin:4px 4px 0 0"></em>
+            <input #gb type="text" pInputText size="50" placeholder="Buscar">
+          </div>
+        </p-header>
+        <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
+        subscriberciChr
+        <p-column field="subscriberciChr" header="CI"></p-column>
+        <p-column field="beneficiarylastnameChr" header="Apellido"></p-column>
+        <p-column field="beneficiarynameChr" header="Nombre"></p-column>
+        <p-column field="phonenumberChr" header="Número"></p-column>
+        <p-column field="amount" header="Monto"></p-column>
+        <p-column field="currencyChr" header="Moneda"></p-column>
+        <p-column field="walletChr" header="Billetera"></p-column>
+        <p-column field="rolspChr" header="Rol"></p-column>
+
+      </p-dataTable>
+      </div>
+  <p-footer>
+    <button type="button" pButton icon="fa-check" (click)="agregarBeneficiarios()"
+            label="Agregar Seleccionados a la Lista"></button>
+    <button type="button" pButton icon="fa-close" (click)="templateDisplay=false" label="Cancelar"></button>
+  </p-footer>
+</p-dialog>
+
+

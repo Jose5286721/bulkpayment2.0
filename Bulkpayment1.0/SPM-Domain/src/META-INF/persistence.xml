@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+	<persistence-unit name="SPM-Domain-PU">
+		<!--jta-data-source>java:jboss/datasources/spm-ds</jta-data-source-->
+		<jta-data-source>java:jboss/datasources/SPM-GUIDatasource</jta-data-source>
+		<class>py.com.global.spm.entities.Approval</class>
+		<class>py.com.global.spm.entities.Beneficiary</class>
+		<class>py.com.global.spm.entities.Company</class>
+		<class>py.com.global.spm.entities.Draft</class>
+		<class>py.com.global.spm.entities.Draftdetail</class>
+		<class>py.com.global.spm.entities.DraftdetailPK</class>
+		<class>py.com.global.spm.entities.Eventcode</class>
+		<class>py.com.global.spm.entities.EventcodePK</class>
+		<class>py.com.global.spm.entities.Logdraftop</class>
+		<class>py.com.global.spm.entities.Logmessage</class>
+		<class>py.com.global.spm.entities.Logmts</class>
+		<class>py.com.global.spm.entities.Logmtsrev</class>
+		<class>py.com.global.spm.entities.Logpayment</class>
+		<class>py.com.global.spm.entities.Logsession</class>
+		<class>py.com.global.spm.entities.Paymentorder</class>
+		<class>py.com.global.spm.entities.Paymentorderdetail</class>
+		<class>py.com.global.spm.entities.PaymentorderdetailPK</class>
+		<class>py.com.global.spm.entities.Paymentordertype</class>
+		<class>py.com.global.spm.entities.Process</class>
+		<class>py.com.global.spm.entities.ProcesscontrolPK</class>
+		<class>py.com.global.spm.entities.ProcessperformancePK</class>
+		<class>py.com.global.spm.entities.Systemparameter</class>
+		<class>py.com.global.spm.entities.SystemparameterPK</class>
+		<class>py.com.global.spm.entities.User</class>
+		<class>py.com.global.spm.entities.Workflow</class>
+		<class>py.com.global.spm.entities.Workflowdet</class>
+		<class>py.com.global.spm.entities.WorkflowdetPK</class>
+		<class>py.com.global.spm.entities.Smslogmessage</class>
+		<class>py.com.global.spm.entities.Prefix</class>
+		<class>py.com.global.spm.entities.Processcontrol</class>
+		<class>py.com.global.spm.entities.Processperformance</class>
+		<class>py.com.global.spm.entities.Logreversion</class>
+		<class>py.com.global.spm.entities.Errorlog</class>
+		<properties>
+	         <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>
+	         <property name="hibernate.hbm2ddl.auto" value="none"/>
+	         <property name="hibernate.show_sql" value="false"/>
+	         <property name="hibernate.format_sql" value="true"/>
+	      </properties>
+	</persistence-unit>
+</persistence>

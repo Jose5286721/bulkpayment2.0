@@ -1,0 +1,185 @@
+<div *ngIf="loading" class="spinner-block">
+  <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+</div>
+
+<mat-card>
+  <mat-card-header class="header-page">
+    <mat-card-title style="color: #3f51b5;"><h1>Ordenes de Pago</h1></mat-card-title>
+  </mat-card-header>
+  <mat-list>
+    <mat-divider class="dividir"></mat-divider>
+  </mat-list>
+
+  <p-growl [(value)]="msgs" life="5000"></p-growl>
+
+  <mat-card-content fxLayout="column" fxLayoutAlign="center center">
+    <div class="content-form">
+      <form class="form-style" [formGroup]="paymentOrderFormGroup">
+        <p-panel header="Realizar una operación a la orden de pago">
+
+          <p-fieldset [style]="{'margin-top':'10px'}" *ngIf="ocultarOperaciones()" [toggleable]="true">
+            <p-header>
+              <b>Operación</b>
+            </p-header>
+
+            <div class="ui-g ui-fluid">
+              <div class="ui-g-12 ui-md-4" *ngIf="mostrarBotonFirma()">
+                <button mat-raised-button  color="primary" class="button-operacion" (click)="firmarOrdenPago()" [disabled]="disableButtons">
+                  <mat-icon>check_circle_outline</mat-icon>
+                  <b>Firmar</b>
+                </button>
+              </div>
+
+              <div class="ui-g-12 ui-md-4" *ngIf="mostrarBotonReintentar()">
+                <button mat-raised-button color="accent" class="button-operacion" (click)="reintentarOrdenPago()" [disabled]="disableButtons">
+                  <mat-icon>autorenew</mat-icon>
+                  <b>Reintentar</b>
+                </button>
+              </div>
+
+              <div class="ui-g-12 ui-md-4" *ngIf="mostrarBotonCancelar()">
+                <button mat-raised-button color="warn" class="button-operacion" (click)="cancelarOrdenPago()" [disabled]="disableButtons">
+                  <mat-icon>cancel</mat-icon>
+                  <b>Cancelar</b>
+                </button>
+              </div>
+
+            </div>
+          </p-fieldset>
+          <p-fieldset [style]="{'margin-top':'10px'}" [toggleable]="true">
+            <p-header>
+              <b>Resumen</b>
+            </p-header>
+            <div class="ui-g ui-fluid">
+              <div class="ui-g-12 ui-md-6">
+                <div class="input-content">
+                  <label class="label-form">Beneficiarios</label>
+                  <input pInputText type="number" name="beneficiarioslength" [readonly]="true"
+                         formControlName="beneficiarioslength">
+                </div>
+              </div>
+              <div class="ui-g-12 ui-md-6" *ngIf="!mostrarBotonFirma()">
+                <div class="input-content">
+                  <label class="label-form">Pagos Satisfactorios</label>
+                  <input pInputText type="number" name="paymentlength" [readonly]="true"
+                         formControlName="paymentlength">
+                </div>
+              </div>
+              <div class="ui-g-12 ui-md-6" *ngIf="!mostrarBotonFirma()">
+                <div class="input-content">
+                  <label class="label-form">Pagos con Error</label>
+                  <input pInputText type="number" name="paymenterrorlength" [readonly]="true"
+                         formControlName="paymenterrorlength">
+                </div>
+              </div>
+              <div class="ui-g-12 ui-md-6">
+                <div class="input-content">
+                  <label class="label-form">Firmantes</label>
+                  <input pInputText type="number" name="signerslength" [readonly]="true"
+                         formControlName="signerslength">
+                </div>
+              </div>
+              <div class="ui-g-12 ui-md-6">
+                <div class="input-content">
+                  <label class="label-form">Monto Total</label>
+                  <input pInputText type="text" name="totalammount" [readonly]="true" formControlName="totalammount">
+                </div>
+              </div>
+              <div class="ui-g-12 ui-md-6" *ngIf="!mostrarBotonFirma()">
+                <div class="input-content">
+                  <label class="label-form">Monto Pagado</label>
+                  <input pInputText type="text" name="paymentammount" [readonly]="true"
+                         formControlName="paymentammount">
+                </div>
+              </div>
+            </div>
+          </p-fieldset>
+          <p-fieldset [style]="{'margin-top':'10px'}" [toggleable]="true" [collapsed]="true">
+            <p-header>
+              <b>Información Orden Pago</b>
+            </p-header>
+
+            <div class="ui-g ui-fluid">
+              <div class="ui-g-12 ui-md-6">
+                <div class="input-content">
+                  <label class="label-form">Id</label>
+                  <input pInputText type="number" name="idpaymentOrderPk" [readonly]="true"
+                         formControlName="idpaymentOrderPk">
+                </div>
+              </div>
+
+              <div class="ui-g-12 ui-md-6" *ngIf="isSuperCompany()">
+                <div class="input-content">
+                  <label class="label-form">Empresa</label>
+                  <input pInputText type="text" name="company" [readonly]="true" formControlName="company">
+                </div>
+              </div>
+
+              <div class="ui-g-12 ui-md-6">
+                <div class="input-content">
+                  <label class="label-form">Estado</label>
+                  <input pInputText type="text" name="stateChr" [readonly]="true" formControlName="stateChr">
+                </div>
+              </div>
+
+              <div class="ui-g-12 ui-md-6">
+                <div class="input-content">
+                  <label class="label-form">Descripción </label>
+                  <textarea pInputTextarea placeholder="Ingrese descripción" name="descripcion" [rows]="8"
+                            formControlName="descriptionChr" [readonly]="true">
+                  </textarea>
+                </div>
+              </div>
+
+              <div class="ui-g-12 ui-md-6">
+                <div class="input-content">
+                  <label class="label-form">Fecha de Creación</label>
+                  <p-inputMask mask="99/99/9999" name="creationdate" formControlName="creationdate" [readonly]="true"
+                               slotChar="dd/mm/yyyy"></p-inputMask>
+
+                </div>
+              </div>
+
+              <div class="ui-g-12 ui-md-6">
+                <div class="input-content">
+                  <label class="label-form">Última Modificación</label>
+                  <p-inputMask mask="99/99/9999" name="lastmodification" formControlName="lastmodification" [readonly]="true"
+                               slotChar="dd/mm/yyyy"></p-inputMask>
+
+                </div>
+              </div>
+
+            </div>
+        </p-fieldset>
+          <p-fieldset [style]="{'margin-top':'10px'}" [toggleable]="true" [collapsed]="true">
+            <p-header>
+              <b>Firmantes</b>
+            </p-header>
+          <p-dataTable #dt [value]="paymentOrderDt" [paginator]="false" [responsive]="true" [resizableColumns]="true">
+            <p-column field="id" header="Turno"></p-column>
+            <p-column field="nombre" header="Nombre"></p-column>
+            <p-column header="Firma">
+              <ng-template let-firmante="rowData" let-rindex="rowIndex" pTemplate>
+                {{ firmante.firma? 'Firmado' : 'No Firmado' }}
+              </ng-template>
+            </p-column>
+          </p-dataTable>
+          </p-fieldset>
+          <div style="justify-content: center; display: flex">
+            <mat-card-actions style="width: 100%; justify-content: center">
+              <button mat-raised-button color="primary" class="boton-style" type="reset" (click)="navigateToPaymentOrderList()">
+                <mat-icon>arrow_back</mat-icon>
+                <b>Volver</b>
+              </button>
+            </mat-card-actions>
+          </div>
+          </p-panel>
+      </form>
+    </div>
+
+  </mat-card-content>
+
+</mat-card>
+
+
+

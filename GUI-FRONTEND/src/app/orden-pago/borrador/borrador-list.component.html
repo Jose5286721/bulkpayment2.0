@@ -1,0 +1,203 @@
+<div *ngIf="loading" class="spinner-block">
+  <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+</div>
+<mat-card>
+  <mat-card-header class="header-page">
+    <mat-card-title style="color: #3f51b5;"><h1>Borradores</h1></mat-card-title>
+  </mat-card-header>
+  <mat-list>
+    <mat-divider class="dividir"></mat-divider>
+  </mat-list>
+
+  <p-growl [(value)]="msgs" life="5000"></p-growl>
+
+  <mat-card-content fxLayout="column" fxLayoutAlign="center center">
+    <div class="content-form">
+      <form class="form-style">
+
+        <p-panel header="Filtros de Busqueda" [toggleable]="true">
+
+          <div class="ui-g ui-fluid">
+              <div class="ui-g-12 ui-md-8">
+
+                <div class="ui-g-12 ui-md-6">
+                  <div class="input-content">
+                    <label class="label-form">Id </label>
+                    <input pInputText  type="number" name="idBorrador" [(ngModel)]="filtroBusqueda.iddraftPk">
+                  </div>
+                </div>
+
+                <div class="ui-g-12 ui-md-6">
+                  <div class="input-content">
+                    <label class="label-form">Tipo Orden de Pago</label>
+                    <p-autoComplete [suggestions]="filteredPaymentOrderType" [dropdown]="true" [(ngModel)]="filtroBusqueda.orderpaymenttype"
+                                    (completeMethod)="filterPaymentOrderType($event)" [size]="50" field="nameChr" name="nameChr"
+                                    [minLength]="1" placeholder="Seleccione Tipo Orden de Pago">
+                      <ng-template let-paymentOrderType pTemplate="item">
+                        <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
+                          <div class="autocomplete-style">{{paymentOrderType.nameChr}}</div>
+                        </div>
+                      </ng-template>
+                    </p-autoComplete>
+                  </div>
+                </div>
+
+                <div class="ui-g-12 ui-md-6">
+                  <div class="input-content">
+                    <label class="label-form">Workflow</label>
+                    <p-autoComplete [suggestions]="filteredWorkflow" [dropdown]="true" [(ngModel)]="filtroBusqueda.workflow"
+                                    (completeMethod)="filterWorkflow($event)" [size]="50" field="workflownameChr" name="workflownameChr"
+                                    [minLength]="1" placeholder="Seleccione Workflow">
+                      <ng-template let-workflow pTemplate="item">
+                        <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
+                          <div class="autocomplete-style">{{workflow.workflownameChr}}</div>
+                        </div>
+                      </ng-template>
+                    </p-autoComplete>
+                  </div>
+                </div>
+
+                <div class="ui-g-12 ui-md-6">
+                  <div class="input-content">
+                    <label class="label-form">Recurrencia</label>
+                    <p-dropdown [options]="recurrenciaOptions" [style]="{'width':'100%'}"
+                                placeholder="Seleccione" [(ngModel)]="filtroBusqueda.recurrentNum"
+                                name="recurrencia"></p-dropdown>
+                  </div>
+                </div>
+
+                <div class="ui-g-12 ui-md-6" *ngIf="isSuperCompany()">
+                  <div class="input-content">
+                    <label class="label-form">Empresa</label>
+                    <p-autoComplete [suggestions]="filteredCompany" [dropdown]="true" [(ngModel)]="filtroBusqueda.company"
+                                    (completeMethod)="filterCompany($event)" [size]="50" field="companynameChr" name="companynameChr"
+                                    [minLength]="1" placeholder="Seleccione Empresa">
+                      <ng-template let-empresa pTemplate="item">
+                        <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
+                          <div class="autocomplete-style">{{empresa.companynameChr}}</div>
+                        </div>
+                      </ng-template>
+                    </p-autoComplete>
+                  </div>
+                </div>
+
+                <div class="ui-g-12 ui-md-6">
+                  <div class="input-content">
+                    <label class="label-form">Descripción</label>
+                    <textarea pInputTextarea placeholder="Ingrese Descripción"
+                              name="descripcion" [(ngModel)]="filtroBusqueda.descriptionChr"
+                              maxlength="100">
+
+                    </textarea>
+                  </div>
+                </div>
+
+              </div>
+
+            <div class="ui-g-12 ui-md-4">
+              <p-fieldset legend="Fecha de Creación">
+
+                <div class="input-content">
+                  <label class="label-form">Desde</label>
+                  <p-inputMask mask="99/99/9999" name="creationdateTim" [(ngModel)]="filtroBusqueda.creationdateTimStart"
+                               slotChar="dd/mm/yyyy" ></p-inputMask>
+
+                </div>
+
+                <div class="input-content">
+                  <label class="label-form">Hasta </label>
+                  <p-inputMask mask="99/99/9999" name="creationdateTim" [(ngModel)]="filtroBusqueda.creationdateTimEnd"
+                               slotChar="dd/mm/yyyy" ></p-inputMask>
+
+                </div>
+
+              </p-fieldset>
+            </div>
+
+          </div>
+
+        </p-panel>
+        <div style="justify-content: center; display: flex">
+          <mat-card-actions style="width: 100%; justify-content: center">
+            <button mat-raised-button color="primary" class="boton-style"  (click)="onBusqueda()">
+              <mat-icon>search</mat-icon>
+              <b>Buscar</b>
+            </button>
+            <button mat-raised-button color="primary" class="boton-style" (click)="reset()">
+              <mat-icon>clear</mat-icon>
+              <b>Limpiar</b>
+            </button>
+            <button mat-raised-button type="reset" color="primary" class="boton-style" (click)="navigateDraftEdit(null)" *ngIf="modificarBorradorPerm()">
+              <mat-icon>add</mat-icon>
+              <b>Agregar</b>
+            </button>
+          </mat-card-actions>
+        </div>
+      </form>
+
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<p-dataTable #dt [value]="borradoresDt" [rows]="10" [paginator]="false" [responsive]="true" [resizableColumns]="true"
+             (onSort)="onSort($event)" [loading]="loading" loadingIcon="fa-spinner" emptyMessage="Sin elementos">
+
+  <p-column field="iddraftPk" header="Id"></p-column>
+  <p-column header="Creación">
+    <ng-template let-borrador="rowData" let-rindex="rowIndex" pTemplate>
+      {{ borrador.creationdateTim | date: 'dd/MM/yyyy' }}
+    </ng-template>
+  </p-column>
+  <!--p-column field="paymentordertype" header="Tipo Orden de Pago"></p-column-->
+  <p-column field="company" header="Empresa" *ngIf="isSuperCompany()"></p-column>
+  <!--p-column field="descriptionChr" header="Descripción"></p-column-->
+  <!--p-column field="workflow" header="Workflow"></p-column-->
+  <p-column header="Recurrencia">
+    <ng-template let-borrador="rowData" let-rindex="rowIndex" pTemplate>
+      {{ borrador.recurrentNum ? 'Si' : 'No'}}
+    </ng-template>
+  </p-column>
+  <p-column header="Estado">
+    <ng-template let-borrador="rowData" let-rindex="rowIndex" pTemplate>
+      {{ states[borrador.stateChr]}}
+    </ng-template>
+  </p-column>
+  <p-column field="user" header="Usuario" *ngIf="isSuperCompany()"></p-column>
+  <p-column header="Pago">
+    <ng-template let-borrador="rowData" let-rindex="rowIndex" pTemplate>
+      {{ borrador.paiddateTim | date: 'dd/MM/yyyy' }}
+    </ng-template>
+  </p-column>
+  <p-column header="Desde">
+    <ng-template let-borrador="rowData" let-rindex="rowIndex" pTemplate>
+      {{ borrador.fromdateTim | date: 'dd/MM/yyyy' }}
+    </ng-template>
+  </p-column>
+  <p-column header="Hasta">
+    <ng-template let-borrador="rowData" let-rindex="rowIndex" pTemplate>
+      {{ borrador.todateTim | date: 'dd/MM/yyyy' }}
+    </ng-template>
+  </p-column>
+  <p-column header="Día Generación">
+    <ng-template let-borrador="rowData" let-rindex="rowIndex" pTemplate>
+      {{ borrador.generatedayNum }}
+    </ng-template>
+  </p-column>
+  <p-column [style]="{'width':'10%'}">
+    <ng-template pTemplate="header">
+      Acción
+    </ng-template>
+    <ng-template let-borrador="rowData" pTemplate="body">
+      <div class="my-center-content">
+        <button pButton icon="fa-pencil" style="background-color: #3f51b5;" (click)="navigateDraftEdit(borrador)" *ngIf="modificarBorradorPerm()"></button>
+      </div>
+    </ng-template>
+  </p-column>
+  <p-footer>Total de Registros: {{totalRecords}}</p-footer>
+
+</p-dataTable>
+
+<p-paginator rows="10" [totalRecords]="totalRecords" pageLinkSize="1" (onPageChange)="paginate($event)"
+             [rowsPerPageOptions]="[10]"></p-paginator>
+
+

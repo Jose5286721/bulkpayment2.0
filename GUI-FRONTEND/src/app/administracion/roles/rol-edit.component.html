@@ -1,0 +1,124 @@
+<div *ngIf="loading" class="spinner-block">
+  <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+</div>
+
+<mat-card>
+  <mat-card-header class="header-page">
+    <mat-card-title style="color: #3f51b5;">
+      <h1>Rol</h1>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-list>
+    <mat-divider class="dividir"></mat-divider>
+  </mat-list>
+
+  <p-growl [(value)]="msgs" life="5000"></p-growl>
+
+  <mat-card-content fxLayout="column" fxLayoutAlign="center center">
+    <div class="content-form">
+      <form class="form-style" [formGroup]="rolFormGroup" (ngSubmit)="saveRol()">
+
+        <p-panel [header]="accionTitle">
+
+          <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-md-6">
+                <div class="input-content">
+                  <label class="label-form c required">Rol: </label>
+                  <input pInputText placeholder="Ingrese nombre del rol"  type="text" [required]="true" [readonly]="!superCompany"
+                         name="rolnameChr" id="rolnameChr" formControlName="rolnameChr" maxlength="20">
+                </div>
+            </div>
+
+            <div class="ui-g-12 ui-md-6">
+              <div class="input-content">
+                <label class="label-form">Descripción: </label>
+                <textarea pInputTextarea placeholder="Ingrese descripción" [readonly]="!superCompany"
+                          name="descripcion" formControlName="descriptionChr" maxlength="50">
+                  </textarea>
+              </div>
+            </div>
+            <div class="ui-g-12 ui-md-6" *ngIf="!isNewRol">
+              <div class="input-content">
+                <label class="label-form-s">Activo: </label>
+                <p-checkbox formControlName="stateNum" binary="true" name="activo" value="true"></p-checkbox>
+              </div>
+            </div>
+          </div>
+
+            <!--div class="ui-g-12 ui-md-6"  *ngIf="isSuperCompany()">
+              <div class="input-content">
+                <label class="label-form required">Empresa:</label>
+                <p-autoComplete formControlName="company" [suggestions]="filteredCompany" [dropdown]="isNewRol" [readonly]="!isNewRol"
+                                (completeMethod)="filterCompany($event)" [size]="50" field="companynameChr" name="companynameChr"
+                                [minLength]="1" placeholder="Ingrese empresa">
+                  <ng-template let-empresa pTemplate="item">
+                    <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
+                      <div style="font-size:18px;float:right;margin:10px 10px 0 0">{{empresa.companynameChr}}</div>
+                    </div>
+                  </ng-template>
+                </p-autoComplete>
+              </div>
+            </div-->
+
+            <!--<div class="ui-g-12 ui-md-3">-->
+              <!--<div class="input-content">-->
+                <!--<label class="label-form-s">Defecto: </label>-->
+                  <!--<p-checkbox formControlName="defaultrolNum" binary="true" name="activo" value="true"-->
+                              <!--[disabled]="!isNewRol && !superCompany"></p-checkbox>-->
+              <!--</div>-->
+            <!--</div>-->
+          <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-md-12">
+              <p-orderList [value]="permisosSelecionados" *ngIf="!superCompany"
+                           header="Permisos"
+                           [responsive]="true" filterBy="nameChr"
+                           filterPlaceholder="Buscar"
+                           [listStyle]="{'height':'300px'}" [style]="{'width':'50%'}">
+                <ng-template let-permiso pTemplate="item">
+                  <div class="ui-helper-clearfix">
+                    <div style="font-size:14px;margin:15px 0 0 0; text-align: center">
+                      {{permiso.descriptionChr}}</div>
+                  </div>
+                </ng-template>
+              </p-orderList>
+              <p-fieldset legend="Permisos" [style]="{'height':'100%'}" *ngIf="superCompany">
+                <p-pickList [source]="listaPermisos" [target]="permisosSelecionados"
+                            sourceHeader="Permisos Disponibles"
+                            targetHeader="Permisos Seleccionados"
+                            [responsive]="true" filterBy="nameChr"
+                            dragdrop="true" sourceFilterPlaceholder="Buscar"
+                            targetFilterPlaceholder="Buscar"
+                            [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}">
+                  <ng-template let-permiso pTemplate="item">
+                    <div class="ui-helper-clearfix">
+                      <div style="font-size:14px;margin:15px 0 0 0; text-align: center">
+                        {{permiso.descriptionChr}}</div>
+                    </div>
+                  </ng-template>
+                </p-pickList>
+              </p-fieldset>
+            </div>
+          </div>
+
+        </p-panel>
+        <div style="justify-content: center; display: flex">
+          <mat-card-actions style="width: 100%; justify-content: center">
+            <button mat-raised-button color="primary" class="boton-style" type="submit" [disabled]="!rolFormGroup.valid || permisosSelecionados.length==0"
+              *ngIf="superCompany">
+              <mat-icon>save</mat-icon>
+              <b>Guardar</b>
+            </button>
+            <button mat-raised-button color="primary" class="boton-style" (click)="navigateRolList()" type="reset">
+              <mat-icon>{{superCompany ? 'cancel' : 'arrow_back'}}</mat-icon>
+              <b>{{superCompany ? 'Cancelar' : 'Volver'}}</b>
+            </button>
+          </mat-card-actions>
+        </div>
+      </form>
+
+    </div>
+  </mat-card-content>
+</mat-card>
+
+
+

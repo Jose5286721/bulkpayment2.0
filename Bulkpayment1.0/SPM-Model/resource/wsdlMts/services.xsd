@@ -1,0 +1,818 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.1.7-b01-. -->
+<xs:schema xmlns:tns="http://server.ws.mts.inswitch.us/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://server.ws.mts.inswitch.us/">
+
+<xs:element name="Exception" type="tns:Exception"/>
+
+<xs:element name="agentAutoReversion" type="tns:agentAutoReversion"/>
+
+<xs:element name="agentAutoReversionResponse" type="tns:agentAutoReversionResponse"/>
+
+<xs:element name="bind" type="tns:bind"/>
+
+<xs:element name="bindResponse" type="tns:bindResponse"/>
+
+<xs:element name="cambioPin" type="tns:cambioPin"/>
+
+<xs:element name="cambioPinResponse" type="tns:cambioPinResponse"/>
+
+<xs:element name="cashInConfirm" type="tns:cashInConfirm"/>
+
+<xs:element name="cashInConfirmEscrow" type="tns:cashInConfirmEscrow"/>
+
+<xs:element name="cashInConfirmEscrowResponse" type="tns:cashInConfirmEscrowResponse"/>
+
+<xs:element name="cashInConfirmResponse" type="tns:cashInConfirmResponse"/>
+
+<xs:element name="cashInPre" type="tns:cashInPre"/>
+
+<xs:element name="cashInPreEscrow" type="tns:cashInPreEscrow"/>
+
+<xs:element name="cashInPreEscrowResponse" type="tns:cashInPreEscrowResponse"/>
+
+<xs:element name="cashInPreResponse" type="tns:cashInPreResponse"/>
+
+<xs:element name="cashOutConfirm" type="tns:cashOutConfirm"/>
+
+<xs:element name="cashOutConfirmEscrow" type="tns:cashOutConfirmEscrow"/>
+
+<xs:element name="cashOutConfirmEscrowResponse" type="tns:cashOutConfirmEscrowResponse"/>
+
+<xs:element name="cashOutConfirmResponse" type="tns:cashOutConfirmResponse"/>
+
+<xs:element name="cashOutPre" type="tns:cashOutPre"/>
+
+<xs:element name="cashOutPreEscrow" type="tns:cashOutPreEscrow"/>
+
+<xs:element name="cashOutPreEscrowResponse" type="tns:cashOutPreEscrowResponse"/>
+
+<xs:element name="cashOutPreResponse" type="tns:cashOutPreResponse"/>
+
+<xs:element name="cobroConfirm" type="tns:cobroConfirm"/>
+
+<xs:element name="cobroConfirmResponse" type="tns:cobroConfirmResponse"/>
+
+<xs:element name="cobroConfirm_withPin" type="tns:cobroConfirm_withPin"/>
+
+<xs:element name="cobroConfirm_withPinResponse" type="tns:cobroConfirm_withPinResponse"/>
+
+<xs:element name="cobroPre" type="tns:cobroPre"/>
+
+<xs:element name="cobroPreResponse" type="tns:cobroPreResponse"/>
+
+<xs:element name="consultaSaldo" type="tns:consultaSaldo"/>
+
+<xs:element name="consultaSaldoResponse" type="tns:consultaSaldoResponse"/>
+
+<xs:element name="consultaTrn" type="tns:consultaTrn"/>
+
+<xs:element name="consultaTrnResponse" type="tns:consultaTrnResponse"/>
+
+<xs:element name="cotizacion" type="tns:cotizacion"/>
+
+<xs:element name="cotizacionResponse" type="tns:cotizacionResponse"/>
+
+<xs:element name="getServiceParameter" type="tns:getServiceParameter"/>
+
+<xs:element name="getServiceParameterResponse" type="tns:getServiceParameterResponse"/>
+
+<xs:element name="identity" type="tns:identity"/>
+
+<xs:element name="identityResponse" type="tns:identityResponse"/>
+
+<xs:element name="movBilletera" type="tns:movBilletera"/>
+
+<xs:element name="movBilleteraResponse" type="tns:movBilleteraResponse"/>
+
+<xs:element name="remitConfirm" type="tns:remitConfirm"/>
+
+<xs:element name="remitConfirmResponse" type="tns:remitConfirmResponse"/>
+
+<xs:element name="remitNationalConfirm" type="tns:remitNationalConfirm"/>
+
+<xs:element name="remitNationalConfirmResponse" type="tns:remitNationalConfirmResponse"/>
+
+<xs:element name="remitNationalPre" type="tns:remitNationalPre"/>
+
+<xs:element name="remitNationalPreResponse" type="tns:remitNationalPreResponse"/>
+
+<xs:element name="remitNational_ModifyTransaction" type="tns:remitNational_ModifyTransaction"/>
+
+<xs:element name="remitNational_ModifyTransactionResponse" type="tns:remitNational_ModifyTransactionResponse"/>
+
+<xs:element name="remitPre" type="tns:remitPre"/>
+
+<xs:element name="remitPreResponse" type="tns:remitPreResponse"/>
+
+<xs:element name="resetPin" type="tns:resetPin"/>
+
+<xs:element name="resetPinResponse" type="tns:resetPinResponse"/>
+
+<xs:element name="reversion" type="tns:reversion"/>
+
+<xs:element name="reversionResponse" type="tns:reversionResponse"/>
+
+<xs:element name="rol" type="tns:rol"/>
+
+<xs:element name="rolResponse" type="tns:rolResponse"/>
+
+<xs:element name="salaryPayment" type="tns:salaryPayment"/>
+
+<xs:element name="salaryPaymentResponse" type="tns:salaryPaymentResponse"/>
+
+<xs:element name="selfTopUpConfirm" type="tns:selfTopUpConfirm"/>
+
+<xs:element name="selfTopUpConfirmResponse" type="tns:selfTopUpConfirmResponse"/>
+
+<xs:element name="selfTopUpPre" type="tns:selfTopUpPre"/>
+
+<xs:element name="selfTopUpPreResponse" type="tns:selfTopUpPreResponse"/>
+
+<xs:element name="serviceParameter" type="tns:serviceParameter"/>
+
+<xs:element name="serviceParameterResponse" type="tns:serviceParameterResponse"/>
+
+<xs:element name="unBind" type="tns:unBind"/>
+
+<xs:element name="unBindResponse" type="tns:unBindResponse"/>
+
+<xs:element name="usuario" type="tns:usuario"/>
+
+<xs:element name="usuarioResponse" type="tns:usuarioResponse"/>
+
+<xs:complexType name="remitConfirm">
+<xs:sequence>
+<xs:element name="sesion" type="xs:string" minOccurs="0"/>
+<xs:element name="cuenta_destino" type="xs:string" minOccurs="0"/>
+<xs:element name="monto" type="xs:double" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="remitConfirmResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:trnResponsePack" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="trnResponsePack">
+<xs:complexContent>
+<xs:extension base="tns:basicResponsePack">
+<xs:sequence>
+<xs:element name="idTransaccion" type="xs:int" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="basicResponsePack">
+<xs:sequence>
+<xs:element name="mensaje" type="xs:string" minOccurs="0"/>
+<xs:element name="nroTrans" type="xs:int" minOccurs="0"/>
+<xs:element name="status" type="xs:int" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cobroPre">
+<xs:sequence>
+<xs:element name="sesion" type="xs:string" minOccurs="0"/>
+<xs:element name="cuenta_destino" type="xs:string" minOccurs="0"/>
+<xs:element name="monto" type="xs:double" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cobroPreResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:basicResponsePack" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="remitNationalPre">
+<xs:sequence>
+<xs:element name="sesion" type="xs:string" minOccurs="0"/>
+<xs:element name="cuenta_remitente" type="xs:string" minOccurs="0"/>
+<xs:element name="cuenta_destino" type="xs:string" minOccurs="0"/>
+<xs:element name="monto" type="xs:double" minOccurs="0"/>
+<xs:element name="documento" type="xs:string" minOccurs="0"/>
+<xs:element name="fecha_nacimiento" type="xs:dateTime" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="remitNationalPreResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:basicResponsePack" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cashOutConfirmEscrow">
+<xs:sequence>
+<xs:element name="sesion" type="xs:string" minOccurs="0"/>
+<xs:element name="cuenta_cliente" type="xs:string" minOccurs="0"/>
+<xs:element name="documento_cliente" type="xs:string" minOccurs="0"/>
+<xs:element name="monto" type="xs:double" minOccurs="0"/>
+<xs:element name="fecha_nacimiento" type="xs:dateTime" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cashOutConfirmEscrowResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:trnResponsePack" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getServiceParameter">
+<xs:sequence>
+<xs:element name="sesion" type="xs:string" minOccurs="0"/>
+<xs:element name="servicio" type="xs:int" minOccurs="0"/>
+<xs:element name="codigo_entidad" type="xs:string" minOccurs="0"/>
+<xs:element name="xml" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getServiceParameterResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="Exception">
+<xs:sequence>
+<xs:element name="message" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="usuario">
+<xs:sequence>
+<xs:element name="sesion" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="usuarioResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:usuarioPack" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="usuarioPack">
+<xs:complexContent>
+<xs:extension base="tns:basicResponsePack">
+<xs:sequence>
+<xs:element name="cdi" type="xs:string" minOccurs="0"/>
+<xs:element name="estado" type="xs:string" minOccurs="0"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+<xs:element name="nroVisita" type="xs:int" minOccurs="0"/>
+<xs:element name="perfil" type="xs:string" minOccurs="0"/>
+<xs:element name="rol" type="xs:string" minOccurs="0"/>
+<xs:element name="ultVisita" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="cotizacion">
+<xs:sequence>
+<xs:element name="sesion" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cotizacionResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:cotizacionPack" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cotizacionPack">
+<xs:complexContent>
+<xs:extension base="tns:basicResponsePack">
+<xs:sequence>
+<xs:element name="cantMonedas" type="xs:int" minOccurs="0"/>
+<xs:element name="monedas" type="tns:monedaPack" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="monedaPack">
+<xs:sequence>
+<xs:element name="compra" type="xs:decimal" minOccurs="0"/>
+<xs:element name="moneda" type="xs:string" minOccurs="0"/>
+<xs:element name="venta" type="xs:decimal" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cashInPreEscrow">
+<xs:sequence>
+<xs:element name="sesion" type="xs:string" minOccurs="0"/>
+<xs:element name="cuenta_destino" type="xs:string" minOccurs="0"/>
+<xs:element name="monto" type="xs:double" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cashInPreEscrowResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:basicResponsePack" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="unBind">
+<xs:sequence>
+<xs:element name="sesion" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="unBindResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:unBindPack" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="unBindPack">
+<xs:complexContent>
+<xs:extension base="tns:basicResponsePack">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="cobroConfirm_withPin">
+<xs:sequence>
+<xs:element name="sesion" type="xs:string" minOccurs="0"/>
+<xs:element name="cuenta_destino" type="xs:string" minOccurs="0"/>
+<xs:element name="monto" type="xs:double" minOccurs="0"/>
+<xs:element name="pin" type="xs:string" minOccurs="0"/>
+<xs:element name="reintentos_pin" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cobroConfirm_withPinResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:trnResponsePack" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cashInConfirm">
+<xs:sequence>
+<xs:element name="sesion" type="xs:string" minOccurs="0"/>
+<xs:element name="cuenta_destino" type="xs:string" minOccurs="0"/>
+<xs:element name="monto" type="xs:double" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cashInConfirmResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:trnResponsePack" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="consultaSaldo">
+<xs:sequence>
+<xs:element name="sesion" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="consultaSaldoResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:saldoPack" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="saldoPack">
+<xs:complexContent>
+<xs:extension base="tns:basicResponsePack">
+<xs:sequence>
+<xs:element name="billeteras" type="tns:billeteraPack" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="cantBilleteras" type="xs:int" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="billeteraPack">
+<xs:sequence>
+<xs:element name="estado" type="xs:string" minOccurs="0"/>
+<xs:element name="fechaVencimiento" type="xs:string" minOccurs="0"/>
+<xs:element name="moneda" type="xs:string" minOccurs="0"/>
+<xs:element name="monto" type="xs:decimal" minOccurs="0"/>
+<xs:element name="saldoMaximo" type="xs:decimal" minOccurs="0"/>
+<xs:element name="saldoMinimo" type="xs:decimal" minOccurs="0"/>
+<xs:element name="sobregiro" type="xs:decimal" minOccurs="0"/>
+<xs:element name="tipoBilletera" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cashInPre">
+<xs:sequence>
+<xs:element name="sesion" type="xs:string" minOccurs="0"/>
+<xs:element name="cuenta_destino" type="xs:string" minOccurs="0"/>
+<xs:element name="monto" type="xs:double" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cashInPreResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:basicResponsePack" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cashOutPre">
+<xs:sequence>
+<xs:element name="sesion" type="xs:string" minOccurs="0"/>
+<xs:element name="cuenta_cliente" type="xs:string" minOccurs="0"/>
+<xs:element name="documento_cliente" type="xs:string" minOccurs="0"/>
+<xs:element name="monto" type="xs:double" minOccurs="0"/>
+<xs:element name="fecha_nacimiento_cliente" type="xs:dateTime" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cashOutPreResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:basicResponsePack" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cashInConfirmEscrow">
+<xs:sequence>
+<xs:element name="sesion" type="xs:string" minOccurs="0"/>
+<xs:element name="cuenta_destino" type="xs:string" minOccurs="0"/>
+<xs:element name="monto" type="xs:double" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cashInConfirmEscrowResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:trnResponsePack" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="identity">
+<xs:sequence>
+<xs:element name="theString" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="identityResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="reversion">
+<xs:sequence>
+<xs:element name="sesion" type="xs:string" minOccurs="0"/>
+<xs:element name="id_transaccion" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="reversionResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:trnResponsePack" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="salaryPayment">
+<xs:sequence>
+<xs:element name="sesion" type="xs:string" minOccurs="0"/>
+<xs:element name="cuenta_destino" type="xs:string" minOccurs="0"/>
+<xs:element name="rol_predeterminado" type="xs:string" minOccurs="0"/>
+<xs:element name="monto" type="xs:double" minOccurs="0"/>
+<xs:element name="moneda" type="xs:string" minOccurs="0"/>
+<xs:element name="brand" type="xs:string" minOccurs="0"/>
+<xs:element name="tipo_billetera" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="salaryPaymentResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:trnResponsePack" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cobroConfirm">
+<xs:sequence>
+<xs:element name="sesion" type="xs:string" minOccurs="0"/>
+<xs:element name="cuenta_destino" type="xs:string" minOccurs="0"/>
+<xs:element name="monto" type="xs:double" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cobroConfirmResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:trnResponsePack" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="remitPre">
+<xs:sequence>
+<xs:element name="sesion" type="xs:string" minOccurs="0"/>
+<xs:element name="cuenta_destino" type="xs:string" minOccurs="0"/>
+<xs:element name="monto" type="xs:double" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="remitPreResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:basicResponsePack" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="selfTopUpConfirm">
+<xs:sequence>
+<xs:element name="sesion" type="xs:string" minOccurs="0"/>
+<xs:element name="monto" type="xs:double" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="selfTopUpConfirmResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:trnResponsePack" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cashOutPreEscrow">
+<xs:sequence>
+<xs:element name="sesion" type="xs:string" minOccurs="0"/>
+<xs:element name="cuenta_cliente" type="xs:string" minOccurs="0"/>
+<xs:element name="documento_cliente" type="xs:string" minOccurs="0"/>
+<xs:element name="monto" type="xs:double" minOccurs="0"/>
+<xs:element name="fecha_nacimiento_cliente" type="xs:dateTime" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cashOutPreEscrowResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:basicResponsePack" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="serviceParameter">
+<xs:sequence>
+<xs:element name="sesion" type="xs:string" minOccurs="0"/>
+<xs:element name="servicio" type="xs:int" minOccurs="0"/>
+<xs:element name="codigo_entidad" type="xs:string" minOccurs="0"/>
+<xs:element name="xml" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="serviceParameterResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="movBilletera">
+<xs:sequence>
+<xs:element name="sesion" type="xs:string" minOccurs="0"/>
+<xs:element name="fecha_ini_anho" type="xs:string" minOccurs="0"/>
+<xs:element name="fecha_ini_mes" type="xs:string" minOccurs="0"/>
+<xs:element name="fecha_ini_dia" type="xs:string" minOccurs="0"/>
+<xs:element name="fecha_fin_anho" type="xs:string" minOccurs="0"/>
+<xs:element name="fecha_fin_mes" type="xs:string" minOccurs="0"/>
+<xs:element name="fecha_fin_dia" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="movBilleteraResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:movBilleteraPack" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="movBilleteraPack">
+<xs:complexContent>
+<xs:extension base="tns:basicResponsePack">
+<xs:sequence>
+<xs:element name="cantMovBilletera" type="xs:int" minOccurs="0"/>
+<xs:element name="transacciones" type="tns:transaccionV2Pack" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="transaccionV2Pack">
+<xs:sequence>
+<xs:element name="cargo" type="xs:decimal" minOccurs="0"/>
+<xs:element name="comision" type="xs:decimal" minOccurs="0"/>
+<xs:element name="credito" type="xs:decimal" minOccurs="0"/>
+<xs:element name="debito" type="xs:decimal" minOccurs="0"/>
+<xs:element name="fecha" type="xs:string" minOccurs="0"/>
+<xs:element name="idCuenta" type="xs:string" minOccurs="0"/>
+<xs:element name="idTrans" type="xs:int" minOccurs="0"/>
+<xs:element name="movilDestino" type="xs:string" minOccurs="0"/>
+<xs:element name="movilOrigen" type="xs:string" minOccurs="0"/>
+<xs:element name="resultado" type="xs:string" minOccurs="0"/>
+<xs:element name="servicio" type="xs:string" minOccurs="0"/>
+<xs:element name="tipo" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="remitNational_ModifyTransaction">
+<xs:sequence>
+<xs:element name="sesion" type="xs:string" minOccurs="0"/>
+<xs:element name="id_transaccion" type="xs:string" minOccurs="0"/>
+<xs:element name="cuenta_remitente" type="xs:string" minOccurs="0"/>
+<xs:element name="cuenta_destino" type="xs:string" minOccurs="0"/>
+<xs:element name="monto" type="xs:double" minOccurs="0"/>
+<xs:element name="documento" type="xs:string" minOccurs="0"/>
+<xs:element name="fecha_nacimiento" type="xs:dateTime" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="remitNational_ModifyTransactionResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:trnResponsePack" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="rol">
+<xs:sequence>
+<xs:element name="sesion" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="rolResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:rolPack" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="rolPack">
+<xs:complexContent>
+<xs:extension base="tns:basicResponsePack">
+<xs:sequence>
+<xs:element name="cantPermisos" type="xs:int" minOccurs="0"/>
+<xs:element name="permisos" type="tns:idPack" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="idPack">
+<xs:sequence>
+<xs:element name="codigo" type="xs:int" minOccurs="0"/>
+<xs:element name="descripcion" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="selfTopUpPre">
+<xs:sequence>
+<xs:element name="sesion" type="xs:string" minOccurs="0"/>
+<xs:element name="monto" type="xs:double" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="selfTopUpPreResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:basicResponsePack" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="bind">
+<xs:sequence>
+<xs:element name="usr" type="xs:string" minOccurs="0"/>
+<xs:element name="pwd" type="xs:string" minOccurs="0"/>
+<xs:element name="role" type="xs:string" minOccurs="0"/>
+<xs:element name="ip" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="bindResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:bindPack" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="bindPack">
+<xs:complexContent>
+<xs:extension base="tns:basicResponsePack">
+<xs:sequence>
+<xs:element name="sesion" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="consultaTrn">
+<xs:sequence>
+<xs:element name="sesion" type="xs:string" minOccurs="0"/>
+<xs:element name="id_transaccion" type="xs:int" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="consultaTrnResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:transaccionPack" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="transaccionPack">
+<xs:complexContent>
+<xs:extension base="tns:basicResponsePack">
+<xs:sequence>
+<xs:element name="codPagos" type="xs:string" minOccurs="0"/>
+<xs:element name="descPagos" type="xs:string" minOccurs="0"/>
+<xs:element name="detalleTrans" type="tns:movimientoPack" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="error" type="xs:string" minOccurs="0"/>
+<xs:element name="fecha" type="xs:string" minOccurs="0"/>
+<xs:element name="idTransaccion" type="xs:int" minOccurs="0"/>
+<xs:element name="interfaz" type="xs:string" minOccurs="0"/>
+<xs:element name="moneda" type="xs:string" minOccurs="0"/>
+<xs:element name="monto" type="xs:decimal" minOccurs="0"/>
+<xs:element name="movilDestino" type="xs:string" minOccurs="0"/>
+<xs:element name="movilOrigen" type="xs:string" minOccurs="0"/>
+<xs:element name="resultado" type="xs:int" minOccurs="0"/>
+<xs:element name="servicio" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="movimientoPack">
+<xs:sequence>
+<xs:element name="monto" type="xs:decimal" minOccurs="0"/>
+<xs:element name="movil" type="xs:string" minOccurs="0"/>
+<xs:element name="nivel" type="xs:string" minOccurs="0"/>
+<xs:element name="tipo" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="agentAutoReversion">
+<xs:sequence>
+<xs:element name="sesion" type="xs:string" minOccurs="0"/>
+<xs:element name="id_transaccion" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="agentAutoReversionResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:trnResponsePack" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cambioPin">
+<xs:sequence>
+<xs:element name="sesion" type="xs:string" minOccurs="0"/>
+<xs:element name="actual_pin" type="xs:string" minOccurs="0"/>
+<xs:element name="nuevo_pin" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cambioPinResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:pinPack" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="pinPack">
+<xs:complexContent>
+<xs:extension base="tns:basicResponsePack">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="resetPin">
+<xs:sequence>
+<xs:element name="sesion" type="xs:string" minOccurs="0"/>
+<xs:element name="msisdn_suscriptor" type="xs:string" minOccurs="0"/>
+<xs:element name="documento_remitente" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="resetPinResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:pinPack" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cashOutConfirm">
+<xs:sequence>
+<xs:element name="sesion" type="xs:string" minOccurs="0"/>
+<xs:element name="cuenta_cliente" type="xs:string" minOccurs="0"/>
+<xs:element name="documento_cliente" type="xs:string" minOccurs="0"/>
+<xs:element name="monto" type="xs:double" minOccurs="0"/>
+<xs:element name="fecha_nacimiento" type="xs:dateTime" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cashOutConfirmResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:trnResponsePack" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="remitNationalConfirm">
+<xs:sequence>
+<xs:element name="sesion" type="xs:string" minOccurs="0"/>
+<xs:element name="cuenta_remitente" type="xs:string" minOccurs="0"/>
+<xs:element name="cuenta_destino" type="xs:string" minOccurs="0"/>
+<xs:element name="monto" type="xs:double" minOccurs="0"/>
+<xs:element name="documento" type="xs:string" minOccurs="0"/>
+<xs:element name="fecha_nacimiento" type="xs:dateTime" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="remitNationalConfirmResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:trnResponsePack" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

@@ -1,0 +1,117 @@
+<div *ngIf="loading" class="spinner-block">
+  <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+</div>
+<mat-card>
+  <mat-card-header class="header-page">
+    <mat-card-title style="color: #3f51b5;"><h1>Empresas</h1></mat-card-title>
+  </mat-card-header>
+  <mat-list>
+    <mat-divider class="dividir"></mat-divider>
+  </mat-list>
+
+  <p-growl [(value)]="msgs" life="5000"></p-growl>
+
+  <mat-card-content fxLayout="column" fxLayoutAlign="center center" *ngIf="isSuperCompany()">
+    <div class="content-form">
+      <form class="form-style">
+
+        <p-panel header="Filtros de Busqueda" [toggleable]="true">
+
+          <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-md-4">
+              <div class="input-content">
+                <label class="label-form">Nombre: </label>
+                  <input pInputText placeholder="Nombre de la empresa"  type="text" maxlength="30"
+                         name="nombre" id="nombre" [(ngModel)]="filtroBusquedaEmpresa.companynameChr">
+              </div>
+            </div>
+
+            <div class="ui-g-12 ui-md-4">
+              <div class="input-content">
+                <label class="label-form">Cuenta:</label>
+                  <input pInputText placeholder="Ingrese cuenta" type="text" name="mtsusr" id="mtsusr" [(ngModel)]="filtroBusquedaEmpresa.mtsfield5Chr"
+                  maxlength="30">
+
+              </div>
+            </div>
+
+            <div class="ui-g-12 ui-md-4">
+              <div class="input-content">
+                <label class="label-form">Estado:</label>
+                  <p-dropdown [options]="estadoList" [(ngModel)]="filtroBusquedaEmpresa.stateChr" [style]="{'width':'100%'}"
+                  placeholder="Seleccione Estado"
+                  name="estado"></p-dropdown>
+
+             </div>
+            </div>
+          </div>
+
+        </p-panel>
+        <div style="justify-content: center; display: flex">
+          <mat-card-actions style="width: 100%; justify-content: center">
+            <button mat-raised-button color="primary" class="boton-style"  (click)="onBusqueda()">
+              <mat-icon>search</mat-icon>
+              <b>Buscar</b>
+            </button>
+            <button mat-raised-button color="primary" class="boton-style" (click)="reset()">
+              <mat-icon>clear</mat-icon>
+              <b>Limpiar</b>
+            </button>
+            <button mat-raised-button type="reset" color="primary" class="boton-style" (click)="navigateCompanyEdit(null)"
+                    *ngIf="modificarEmpresaPerm()">
+              <mat-icon>add</mat-icon>
+              <b>Agregar</b>
+            </button>
+          </mat-card-actions>
+        </div>
+      </form>
+
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<p-dataTable #dt [value]="empresasDt" [rows]="10" [paginator]="false" [responsive]="true" [resizableColumns]="true"
+             (onSort)="onSort($event)" [loading]="loading" loadingIcon="fa-spinner" emptyMessage="Sin elementos">
+
+  <p-column field="companynameChr" header="Nombre"></p-column>
+  <p-column header="Fecha Creación">
+    <ng-template let-empresa="rowData" let-rindex="rowIndex" pTemplate>
+      {{ empresa.creationdateTim | date: 'dd-MM-yyyy' }}
+    </ng-template>
+  </p-column>
+  <p-column field="descriptionChr" header="Descripción"></p-column>
+  <p-column header="Estado">
+    <ng-template let-empresa="rowData" let-rindex="rowIndex" pTemplate>
+      {{ empresa.stateChr == "AC" ? 'Activo' : 'Inactivo' }}
+    </ng-template>
+  </p-column>
+  <p-column field="contactnameChr" header="Nombre de Contacto"></p-column>
+  <p-column field="emailChr" header="Email"></p-column>
+  <!--p-column field="phonenumberChr" header="Teléfono"></p-column-->
+  <!--p-column field="trxdaycountNum" header="Trx del dia"></p-column-->
+  <!--p-column-- field="trxmonthcountNum" header="Trx del mes"></p-column-->
+  <!--p-column field="trxtotalcountNum" header="Trx totales"></p-column-->
+  <p-column header="Fecha última orden de pago generada">
+    <ng-template let-empresa="rowData" let-rindex="rowIndex" pTemplate>
+      {{ empresa.lastopdateTim | date: 'dd-MM-yyyy' }}
+    </ng-template>
+  </p-column>
+  <p-column>
+    <ng-template pTemplate="header">
+      Acción
+    </ng-template>
+    <ng-template let-empresa="rowData" pTemplate="body">
+      <div class="my-center-content">
+        <button pButton icon="fa-pencil" style="background-color: #3f51b5;" (click)="navigateCompanyEdit(empresa)"
+                *ngIf="modificarEmpresaPerm()"></button>
+      </div>
+    </ng-template>
+  </p-column>
+  <p-footer>Total de Registros: {{totalRecords}}</p-footer>
+
+</p-dataTable>
+
+<p-paginator rows="10" [totalRecords]="totalRecords" pageLinkSize="1" (onPageChange)="paginate($event)"
+             [rowsPerPageOptions]="[10]"></p-paginator>
+
+

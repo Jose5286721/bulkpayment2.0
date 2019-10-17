@@ -1,0 +1,9 @@
+:host>>> .ui-growl{
+  top: 100px;
+}
+
+.benef-deleted{
+  color: white !important;
+  background-color: red !important;
+  font-size: 646px !important;
+}

@@ -1,0 +1,44 @@
+<mat-toolbar class="toolbar-principal" [class.mat-elevation-z8]="true" id="top-of-page">
+
+  <button class="menu-but" type="button" mat-button (click)="toggle()" *ngIf="isSelectedCompany$ | async ">
+    <mat-icon >menu</mat-icon>
+  </button>
+  <img *ngIf="see()" src="assets/images/tigo/tigobusiness.png"  style=" display:block; height:142%;margin-left: 20px; margin-top: 18px">
+  <!--<button mat-button style="font-family: Roboto-Bold;padding-top: 15px;color: white;font-size: 25px;margin-left: 15px" (click)="toTop()">-->
+    <!--BULKPAYMENT-->
+  <!--</button>-->
+
+  <span class="spacer">
+  </span>
+  <div fxLayout="column" fxLayoutAlign="end end" >
+    <span fxShow="false" fxShow.gt-sm style="color: white;font-family: Roboto-Bold;padding-top: 50px;" *ngIf="isSelectedCompany$ | async">
+      <b>{{obtenerUsername() }}</b><br>
+    </span>
+    <span fxShow="false" fxShow.gt-sm style="color: white;font-family: Roboto-Bold; font-size: smaller" *ngIf="isSelectedCompany$ | async">
+      <b>{{obtenerCompany() }}</b><br>
+    </span>
+  </div>
+  <button mat-icon-button [matMenuTriggerFor]="profile" style="margin-right: 15px;padding-top: 10px" *ngIf="isSelectedCompany$ | async ">
+    <mat-icon style="color: white; font-size: 32px">account_circle</mat-icon>
+  </button>
+
+  <mat-menu #profile="matMenu">
+    <nav>
+      <a mat-menu-item routerLink="/perfil"
+         routerLinkActive="active" >
+        <mat-icon>perm_identity</mat-icon>
+        Mi Perfil
+      </a>
+      <button mat-menu-item (click)="changeCompany()" [disabled]="canChangeCompany()">
+        <mat-icon>business</mat-icon>
+        {{obtenerCompany()}}
+      </button>
+      <a mat-menu-item (click)="onLogout()"z>
+        <mat-icon>exit_to_app</mat-icon>
+        Cerrar sesión
+      </a>
+
+    </nav>
+  </mat-menu>
+</mat-toolbar>
+

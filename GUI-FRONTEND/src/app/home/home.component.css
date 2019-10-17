@@ -1,0 +1,61 @@
+canvas{
+  width: 60% !important;
+  height: 10% !important;
+  position: relative;
+
+}
+
+h1{
+  text-align: center;
+  color: #3f51b5;;
+  font-size: 100%;
+}
+
+
+.home-icon{
+  background-color: #0404B4;
+  color: white;
+  padding-top: 20px;
+  margin-bottom: 20px;
+
+
+}
+
+mat-card-header{
+  justify-content: center;
+  font-size: 1px ;
+}
+
+section{
+  margin-top: 20px;
+  align-items: center;
+}
+
+h2{
+  color: white;
+  font-size: 150%;
+}
+
+@media (max-width: 959px) {
+  mat-card{
+    margin-bottom: 20px;
+    background-color: #3f51b5;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    width: 80%;
+    max-height: 50px;
+  }
+}
+
+@media (min-width:960px ) {
+  mat-card{
+    margin-bottom: 20px;
+    background-color: #3f51b5;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    max-width: 200px;
+    max-height: 50px;
+  }
+}

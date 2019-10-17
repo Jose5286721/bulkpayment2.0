@@ -1,0 +1,94 @@
+<div *ngIf="loading" class="spinner-block">
+  <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+</div>
+<p-confirmDialog appendTo="body" [responsive]="true" ></p-confirmDialog>
+<mat-card>
+  <mat-card-header class="header-page">
+    <mat-card-title style="color: #3f51b5;">
+      <h1>Parámetros de Sistema</h1>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-list>
+    <mat-divider class="dividir"></mat-divider>
+  </mat-list>
+
+  <p-growl [(value)]="msgs"></p-growl>
+
+  <mat-card-content fxLayout="column" fxLayoutAlign="center center">
+    <div class="content-form">
+      <form class="form-style" [formGroup]="systemparameterFormGroup" (ngSubmit)="saveSystemparameter()">
+
+        <p-panel [header]="accionTitle">
+
+          <div class="ui-g ui-fluid">
+
+            <div class="ui-g-12 ui-md-6">
+              <div class="input-content" >
+                <label class="label-form required">Proceso:</label>
+                <p-autoComplete formControlName="proceso" [required]="true" [suggestions]="filteredProcesos" [dropdown]="isNewSystemParameter"
+                                (completeMethod)="filterProcesos($event)" [size]="50" field="processnameChr"
+                                name="processnameChr"
+                                [minLength]="1" placeholder="Ingrese procesos" [readonly]="!isNewSystemParameter">
+                  <ng-template let-proceso pTemplate="item">
+                    <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
+                      <div style="font-size:18px;float:right;margin:10px 10px 0 0">{{proceso.idprocessPk+proceso.processnameChr}}</div>
+                    </div>
+                  </ng-template>
+                </p-autoComplete>
+              </div>
+            </div>
+
+            <div class="ui-g-12 ui-md-6">
+              <div class="input-content">
+                <label class="label-form required">Parámetro: </label>
+                <input pInputText placeholder="Ingrese el Parametro" type="text" [required]="true"
+                       name="parametro" id="parametro" formControlName="parametro" [readonly]="!isNewSystemParameter"
+                       maxlength="50">
+              </div>
+            </div>
+          </div>
+
+          <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-md-6">
+              <div class="input-content" >
+                <label class="label-form required">Valor: </label>
+                <input pInputText placeholder="Ingrese Valor" [required]="true" maxlength="400"
+                       name="valor" formControlName="valor" >
+              </div>
+            </div>
+
+            <div class="ui-g-12 ui-md-6">
+              <div class="input-content">
+                <label class="label-form">Descripción: </label>
+                <textarea pInputTextarea placeholder="Ingrese descripción"
+                          name="descripcion" formControlName="descripcion" maxlength="100">
+                    </textarea>
+              </div>
+            </div>
+          </div>
+        </p-panel>
+
+        <div style="justify-content: center; display: flex">
+          <mat-card-actions style="width: 100%; justify-content: center">
+            <button mat-raised-button color="primary" class="boton-style" type="submit"
+                    [disabled]="!systemparameterFormGroup.valid">
+              <mat-icon>save</mat-icon>
+              <b>Guardar</b>
+            </button>
+            <button mat-raised-button color="primary" class="boton-style" type="button" (click)="delete()" *ngIf="!isNewSystemParameter">
+               <mat-icon>delete</mat-icon>
+                <b>Eliminar</b>
+             </button>
+            <button mat-raised-button color="primary" class="boton-style" (click)="navigateSystemParameterList()" type="reset">
+              <mat-icon>cancel</mat-icon>
+              <b>Cancelar</b>
+            </button>
+          </mat-card-actions>
+        </div>
+      </form>
+
+    </div>
+  </mat-card-content>
+</mat-card>
+
+

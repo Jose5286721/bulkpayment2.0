@@ -1,0 +1,119 @@
+<div *ngIf="loading" class="spinner-block">
+  <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+</div>
+<mat-card>
+  <mat-card-header class="header-page">
+    <mat-card-title style="color: #3f51b5;"><h1>Comprobantes de Pagos</h1></mat-card-title>
+  </mat-card-header>
+  <mat-list>
+    <mat-divider class="dividir"></mat-divider>
+  </mat-list>
+
+  <p-growl [(value)]="msgs"></p-growl>
+
+  <mat-card-content fxLayout="column" fxLayoutAlign="center center">
+    <div class="content-form">
+      <form class="form-style">
+
+        <p-panel header="Filtros de Busqueda" [toggleable]="true">
+
+          <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-md-8">
+
+              <div class="ui-g-12 ui-md-6">
+                <div class="input-content">
+                  <label class="label-form">CI Beneficiario: </label>
+                  <input pInputText placeholder="Ingrese CI" type="text"
+                         name="beneficiaryNro"[(ngModel)]="filtroBusqueda.beneficiaryCI">
+                </div>
+              </div>
+
+              <div class="ui-g-12 ui-md-6">
+                <div class="input-content">
+                  <label class="label-form">Orden de Pago: </label>
+                  <input pInputText placeholder="Ingrese Id" type="text"
+                         name="beneficiaryNro"[(ngModel)]="filtroBusqueda.paymentOrderId">
+                </div>
+              </div>
+
+              <div class="ui-g-12 ui-md-6">
+                <div class="input-content">
+                  <label class="label-form">Teléfono Beneficiario: </label>
+                  <input pInputText placeholder="Ingrese Teléfono" type="text"
+                         name="beneficiaryNro"[(ngModel)]="filtroBusqueda.phonenumberChr">
+                </div>
+              </div>
+
+              <div class="ui-g-12 ui-md-6" *ngIf="isSuperCompany()">
+                <div class="input-content">
+                  <label class="label-form">Empresa:</label>
+                  <p-autoComplete [(ngModel)]="filtroBusqueda.company" [suggestions]="filteredCompany" [dropdown]="true"
+                                  (completeMethod)="filterCompany($event)" [size]="50" field="companynameChr" name="companynameChr"
+                                  [minLength]="1" placeholder="Ingrese empresa">
+                    <ng-template let-empresa pTemplate="item">
+                      <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
+                        <div style="font-size:18px;float:right;margin:10px 10px 0 0">{{empresa.companynameChr}}</div>
+                      </div>
+                    </ng-template>
+                  </p-autoComplete>
+                </div>
+              </div>
+            </div>
+            <div class="ui-g-12 ui-md-4">
+              <p-fieldset legend="Fecha de Creación">
+
+                <div class="input-content">
+                  <label class="label-form">Desde</label>
+                  <p-inputMask mask="99/99/9999" name="creationdateTim" [(ngModel)]="filtroBusqueda.sinceDate" slotChar="dd/mm/yyyy" ></p-inputMask>
+                </div>
+
+                <div class="input-content">
+                  <label class="label-form">Hasta </label>
+                  <p-inputMask mask="99/99/9999" name="creationdateTim" [(ngModel)]="filtroBusqueda.toDate" slotChar="dd/mm/yyyy" ></p-inputMask>
+                </div>
+
+              </p-fieldset>
+            </div>
+          </div>
+
+        </p-panel>
+        <div style="justify-content: center; display: flex">
+          <mat-card-actions style="width: 100%; justify-content: center">
+            <button mat-raised-button color="primary" class="boton-style" (click)="onBusqueda()">
+              <mat-icon>search</mat-icon>
+              <b>Buscar</b>
+            </button>
+            <button mat-raised-button color="primary" class="boton-style" (click)="reset()">
+              <mat-icon>clear</mat-icon>
+              <b>Limpiar</b>
+            </button>
+            <button mat-raised-button color="primary" class="boton-style" (click)="generarPdf()">
+              <mat-icon svgIcon="pdf"></mat-icon>
+              <b>Reporte PDF</b>
+            </button>
+          </mat-card-actions>
+        </div>
+      </form>
+
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<p-dataTable #dt [value]="comprobantePagoDto" [rows]="10" [paginator]="false" [responsive]="true" [resizableColumns]="true"
+             (onSort)="onSort($event)" [loading]="loading" loadingIcon="fa-spinner">
+
+  <p-column field="name" header="Empresa"></p-column>
+  <p-column field="conceptPayment" header="Concepto del Pago"></p-column>
+  <p-column field="accreditedAmount" header="Monto acreditado"></p-column>
+  <p-column field="accreditedRefNumber" header="Numero de referencia"></p-column>
+  <p-column field="emittedDate" header="Fecha de emision"></p-column>
+  <p-column field="receptorCiNumber" header="CI Beneficiario"></p-column>
+  <p-column field="accreditedLineChr" header="Telefono Beneficiario"></p-column>
+
+  <p-footer>Total de Registros: {{totalRecords}}</p-footer>
+</p-dataTable>
+
+<p-paginator rows="10" [totalRecords]="totalRecords" pageLinkSize="1" (onPageChange)="paginate($event)"
+             [rowsPerPageOptions]="[10]"></p-paginator>
+
+

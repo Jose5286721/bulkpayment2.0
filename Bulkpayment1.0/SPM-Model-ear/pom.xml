@@ -1,0 +1,144 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>py.com.global.spm</groupId>
+        <artifactId>GOP1.0</artifactId>
+        <version>1.0</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <artifactId>SPM-Model-ear</artifactId>
+    <packaging>ear</packaging>
+    <name>SPM-Model-ear</name>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>py.com.global.spm</groupId>
+            <artifactId>SPM-Model</artifactId>
+            <version>1.0</version>
+            <type>ejb</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.persistence</groupId>
+                    <artifactId>persistence-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.jboss.logging</groupId>
+                    <artifactId>jboss-logging</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.hibernate</groupId>
+                    <artifactId>hibernate-validator</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.geronimo.specs</groupId>
+                    <artifactId>geronimo-stax-api_1.0_spec</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>jaxen</groupId>
+                    <artifactId>jaxen</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.geronimo.specs</groupId>
+                    <artifactId>geronimo-activation_1.1_spec</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.geronimo.specs</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.codehaus.woodstox</groupId>
+                    <artifactId>wstx-asl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.ws.commons.axiom</groupId>
+                    <artifactId>axiom-dom</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-fileupload</groupId>
+                    <artifactId>commons-fileupload</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>wsdl4j</groupId>
+                    <artifactId>wsdl4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.woden</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>py.com.global.spm</groupId>
+            <artifactId>SPM-CoreServices</artifactId>
+            <version>1.0</version>
+            <type>war</type>
+        </dependency>
+
+
+        <!-- Descomentar para habilitar SMS-Manager -->
+        <!--<dependency>-->
+            <!--<groupId>py.com.global.spm</groupId>-->
+            <!--<artifactId>SPM-SMSManager</artifactId>-->
+            <!--<version>1.0</version>-->
+            <!--<type>ejb</type>-->
+        <!--</dependency>-->
+
+    </dependencies>
+
+    <build>
+        <finalName>${project.name}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-ear-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <fileNameMapping>no-version</fileNameMapping>
+                    <!-- Tell Maven we are using Java EE 6 -->
+                    <version>6</version>
+
+                    <!-- Use Java EE ear libraries as needed. Java EE ear libraries
+                       are in easy way to package any libraries needed in the ear, and automatically
+                       have any modules (EJB-JARs and WARs) use them -->
+                    <generateApplicationXml>false</generateApplicationXml>
+                    <defaultLibBundleDir>lib</defaultLibBundleDir>
+                    <archive>
+                        <manifestEntries>
+                            <!-- Agregar lo sgte para habilitar SMS-Manager->  deployment.SPM-Model-ear.ear.SPM-SMSManager.jar-->
+                            <Dependencies>org.apache.activemq.artemis, deployment.SPM-Model-ear.ear.SPM-Model.jar, deployment.SPM-Model-ear.ear.SPM-CoreServices.war</Dependencies>
+                        </manifestEntries>
+                    </archive>
+                    <!-- <earSourceDirectory>${basedir}/EarContent</earSourceDirectory> -->
+                </configuration>
+
+            </plugin>
+            <!-- The JBoss AS plugin deploys your ear to a local JBoss AS container -->
+            <!-- Due to Maven's lack newInstance intelligence with EARs we need to configure
+               the jboss-as maven plugin to skip deployment for all modules. We then enable
+               it specifically in the ear module. -->
+            <plugin>
+                <groupId>org.jboss.as.plugins</groupId>
+                <artifactId>jboss-as-maven-plugin</artifactId>
+                <configuration>
+                    <skip>false</skip>
+                </configuration>
+            </plugin>
+
+        </plugins>
+
+
+    </build>
+
+    <organization>
+        <name>Global Soluciones Inteligentes S.A.</name>
+        <url>http://www.globalsi.com.py/</url>
+    </organization>
+
+
+</project>

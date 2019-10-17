@@ -1,0 +1,126 @@
+<div *ngIf="loading" class="spinner-block">
+  <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+</div>
+
+<mat-card>
+  <mat-card-header class="header-page">
+    <mat-card-title style="color: #3f51b5;">
+      <h1>Workflows</h1>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-list>
+    <mat-divider class="dividir"></mat-divider>
+  </mat-list>
+
+  <p-growl [(value)]="msgs" life="5000"></p-growl>
+
+  <mat-card-content fxLayout="column" fxLayoutAlign="center center">
+    <div class="content-form">
+      <form class="form-style" [formGroup]="workflowFormGroup" (ngSubmit)="saveWorkflow()">
+
+        <p-panel [header]="accionTitle">
+
+          <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-md-6">
+              <div class="input-content">
+                <label class="label-form required">Nombre: </label>
+                <input pInputText placeholder="Ingrese nombre del Workflow" type="text" [required]="true"
+                       name="workflownameChr" id="workflownameChr" formControlName="workflownameChr" maxlength="30">
+              </div>
+            </div>
+
+
+            <div class="ui-g-12 ui-md-6">
+              <div class="input-content" *ngIf="isSuperCompany()">
+                <label class="label-form required">Billetera: </label>
+                <input pInputText placeholder="Ingrese Billetera"
+                       name="billetera" formControlName="walletChr" [required]="true">
+              </div>
+            </div>
+
+
+          </div>
+
+          <div class="ui-g ui-fluid">
+
+            <div class="ui-g-12 ui-md-6">
+              <div class="input-content">
+                <label class="label-form">Descripción: </label>
+                <textarea pInputTextarea placeholder="Ingrese descripción"
+                          name="descripcion" formControlName="descriptionChr" maxlength="100">
+                    </textarea>
+              </div>
+            </div>
+
+            <div class="ui-g-12 ui-md-6">
+              <div class="input-content">
+                <label class="label-form">Estado: </label>
+                <p-dropdown [options]="estadoList" [style]="{'width':'100%'}"
+                            placeholder="Seleccione Estado" formControlName="stateChr"
+                            name="estado"></p-dropdown>
+              </div>
+            </div>
+            <div class="ui-g-12 ui-md-6">
+              <div class="input-content" *ngIf="isSuperCompany()">
+                <label class="label-form required">Empresa:</label>
+                <p-autoComplete formControlName="company" [suggestions]="filteredCompany" [dropdown]="true"
+                                (completeMethod)="filterCompany($event)" [size]="50" field="companynameChr"
+                                (onSelect)="onSelectCompany($event)" [required]="superCompany"
+                                name="companynameChr"
+                                [minLength]="1" placeholder="Ingrese empresa">
+                  <ng-template let-empresa pTemplate="item">
+                    <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
+                      <div style="font-size:18px;float:right;margin:10px 10px 0 0">{{empresa.companynameChr}}</div>
+                    </div>
+                  </ng-template>
+                </p-autoComplete>
+              </div>
+            </div>
+
+          </div>
+
+
+          <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-md-12">
+              <p-fieldset legend="Firmantes" [style]="{'height':'100%'}">
+
+                <p-pickList [source]="firmantesList" [target]="firmantesSelecionados"
+                            sourceHeader="Firmantes Disponibles" targetHeader="Firmantes Seleccionados"
+                            [responsive]="true" filterBy="usernameChr"
+                            dragdrop="true" dragdropScope="cars" sourceFilterPlaceholder="Buscar"
+                            targetFilterPlaceholder="Buscar"
+                            [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}">
+                  <ng-template let-user pTemplate="item">
+                    <div class="ui-helper-clearfix">
+                      <div style="font-size:14px;float:right;margin:15px 5px 0 0">
+                        {{user.usernameChr +" "+ user.userlastnameChr}}
+                      </div>
+                    </div>
+                  </ng-template>
+                </p-pickList>
+              </p-fieldset>
+            </div>
+          </div>
+
+        </p-panel>
+        <div style="justify-content: center; display: flex">
+          <mat-card-actions style="width: 100%; justify-content: center">
+            <button mat-raised-button color="primary" class="boton-style" type="submit"
+                    [disabled]="!workflowFormGroup.valid || this.firmantesSelecionados.length==0">
+              <mat-icon>save</mat-icon>
+              <b>Guardar</b>
+            </button>
+            <button mat-raised-button color="primary" class="boton-style" (click)="navigateWorkflowList()" type="reset">
+              <mat-icon>cancel</mat-icon>
+              <b>Cancelar</b>
+            </button>
+          </mat-card-actions>
+        </div>
+      </form>
+
+    </div>
+  </mat-card-content>
+</mat-card>
+
+
+

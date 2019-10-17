@@ -1,0 +1,22 @@
+<h1 mat-dialog-title></h1>
+<div mat-dialog-content>
+  <form (ngSubmit)="close()" [formGroup]="dialogFormGroup">
+    <div class="ui-g ui-fluid">
+        <mat-form-field *ngIf="companies.length>1">
+          <mat-select placeholder="Empresa" formControlName="company" >
+            <mat-option *ngFor="let company of companies" [value]="company" >
+              {{company.companynameChr}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="input-content"  *ngIf="data.sendSms">
+            <input matInput formControlName="pinSms" type="password" placeholder="Pin SMS" required >
+        </mat-form-field>
+        <mat-hint *ngIf="errorPin" [ngStyle]="{'color': 'red'}" align="start">{{errorMessage}}</mat-hint>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-button type="submit" [disabled]="!dialogFormGroup.valid">Ok</button>
+    </div>
+  </form>
+</div>
+

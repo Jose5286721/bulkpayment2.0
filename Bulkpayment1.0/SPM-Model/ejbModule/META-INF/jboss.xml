@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--jboss>
+    <loader-repository>
+        be.thorgull.exemple:loader=SomeUniqueLoaderName
+    </loader-repository>
+</jboss-->
+<jboss-web>
+<loader-repository>
+    py.com.global.spm:loader=SomeUniqueLoaderName
+</loader-repository>
+</jboss-web>

@@ -1,0 +1,205 @@
+<div *ngIf="loading" class="spinner-block">
+  <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+</div>
+
+<mat-card>
+  <mat-card-header class="header-page">
+    <mat-card-title style="color: #3f51b5;"><h1>Empresas</h1></mat-card-title>
+  </mat-card-header>
+  <mat-list>
+    <mat-divider class="dividir"></mat-divider>
+  </mat-list>
+
+  <p-growl [(value)]="msgs" life="5000"></p-growl>
+
+  <mat-card-content fxLayout="column" fxLayoutAlign="center center">
+    <div class="content-form">
+      <form class="form-style" [formGroup]="empresaFormGroup" (ngSubmit)="saveCompany()">
+
+        <p-panel [header]="accionTitle">
+
+          <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-md-4">
+              <p-fieldset legend="Datos de la Empresa" [style]="{'height':'100%'}">
+
+                <div class="input-content">
+                  <label class="label-form required">Nombre: </label>
+                  <input pInputText placeholder="Nombre de la empresa"  type="text" [required]="true" maxlength="30"
+                         name="nombre" id="nombre" formControlName="companynameChr" [readonly]="!isSuperCompany()">
+                </div>
+
+                <div class="input-content" *ngIf="!isNewCompany">
+                  <label class="label-form">Fecha Creación: </label>
+                  <p-inputMask mask="99/99/9999" formControlName="creationdateTim"
+                               slotChar="dd/mm/yyyy" [readonly]="true"></p-inputMask>
+
+                </div>
+
+                <div class="input-content" *ngIf="!isNewCompany">
+                  <label class="label-form">Estado:</label>
+                  <p-dropdown [options]="estadoList" formControlName="stateChr" [style]="{'width':'100%'}"
+                              placeholder="Seleccione Estado" [readonly]="!isSuperCompany()"
+                              name="estado"></p-dropdown>
+
+                </div>
+
+                <div class="input-content">
+                  <label class="label-form">Descripción: </label>
+                  <textarea pInputTextarea placeholder="Ingrese descripción" [readonly]="!isSuperCompany()"
+                            name="descripcion" formControlName="descriptionChr" maxlength="200">
+                  </textarea>
+                </div>
+
+                <div class="input-content">
+                  <label class="label-form required">Nombre de Contacto: </label>
+                  <input pInputText placeholder="Ingrese nombre de contacto"  type="text" [required]="true"
+                         name="nombreContacto" formControlName="contactnameChr" maxlength="50">
+                </div>
+
+                <div class="input-content">
+                  <label class="label-form required">Email: </label>
+                  <input pInputText placeholder="Ingrese email"  type="email" maxlength="50"
+                         name="email" formControlName="emailChr" [required]="true">
+                </div>
+
+                <div class="input-content">
+                  <label class="label-form required">Teléfono: </label>
+                  <input pInputText placeholder="Ingrese número de teléfono"  type="text" [required]="true"
+                         name="phonenumber" formControlName="phonenumberChr" maxlength="20">
+                </div>
+
+                <div class="input-content" *ngIf="isSuperCompany()">
+                  <label class="label-form required">Comisión %: </label>
+                  <input pInputText placeholder="Ingrese comisión"  type="text" [required]="true"
+                         name="comision" formControlName="percentcommissionNum" [readonly]="!isSuperCompany()"
+                         oninput="this.value=this.value.replace(/[^0-9.]+$/,'');">
+                </div>
+
+                <div class="input-content" *ngIf="!isNewCompany">
+                  <label class="label-form">Fecha última orden de pago generada: </label>
+                  <p-inputMask mask="99/99/9999" formControlName="lastopdateTim"
+                               slotChar="dd/mm/yyyy" [readonly]="true"></p-inputMask>
+
+                </div>
+
+              </p-fieldset>
+            </div>
+
+            <div class="ui-g-12 ui-md-4">
+              <p-fieldset legend="Datos de la cuenta de la empresa a debitar" [style]="{'height':'100%'}">
+
+                <div class="input-content">
+                  <label class="label-form required">Cuenta: </label><!--<p-inputMask mask="(9999)999-999" placeholder="Ingrese número Mtsusr" formControlName="mtsusrChr" [required]="true" pTooltip = {{MESSAGES.MTSUSR}} tooltipPosition="right"></p-inputMask> -->
+                  <input pInputText placeholder="Ingrese cuenta"  type="text" [required]="true"
+                         name="mtsband" formControlName="mtsusrChr" pTooltip = {{MESSAGES.CUENTA}} tooltipPosition="right"
+                         maxlength="30">
+                  </div>
+
+                <!--<div class="input-content" *ngIf="isSuperCompany()">-->
+                  <!--<label class="label-form required">Mtsbrand: </label>-->
+                  <!--<input pInputText placeholder="Ingrese mtsband"  type="text" [required]="true"-->
+                         <!--name="mtsband" formControlName="mtsbandChr" pTooltip = {{MESSAGES.MTSBAND}} tooltipPosition="right"-->
+                         <!--maxlength="30">-->
+                <!--</div>-->
+
+                <!--<div class="input-content" *ngIf="isSuperCompany()">-->
+                  <!--<label class="label-form required">Mtsrolbind: </label>-->
+                  <!--<input pInputText placeholder="Ingrese mtsrolbind"  type="text" [required]="true"-->
+                         <!--name="mtsrolbind" formControlName="mtsrolbindChr" pTooltip = {{MESSAGES.MTSROLBIND}} tooltipPosition="right"-->
+                         <!--maxlength="30">-->
+                <!--</div>-->
+
+                <div class="input-content">
+                  <label class="label-form" [class.required]="isNewCompany">Password: </label>
+                  <input pPassword placeholder="Ingrese password"  type="password" [required]="isNewCompany"
+                         name="mtspassword" formControlName="mtspasswordChr" promptLabel="Favor ingrese password"
+                         pTooltip = {{MESSAGES.MTSPASSWORD}} tooltipPosition="right" maxlength="300">
+                </div>
+              </p-fieldset>
+            </div>
+
+            <div class="ui-g-12 ui-md-4">
+
+              <p-fieldset legend="Prioridad de procesamiento"  [style]="{'margin-bottom':'10px'}">
+
+                <div class="input-content">
+                  <label class="label-form">Prioridad</label>
+                  <p-dropdown [options]="priorityList" formControlName="priority" [style]="{'width':'100%'}"
+                              placeholder="Seleccione Prioridad"
+                              name="priority"></p-dropdown>
+
+                </div>
+
+              </p-fieldset>
+
+              <p-fieldset legend="Limite de transacciones" [style]="{'margin-bottom':'10px'}">
+
+                <div class="input-content">
+                  <label class="label-form required">Límite trx diarias: </label>
+                  <input pInputText placeholder="Ingrese límite de trx diarias"  type="number" [required]="true" [readonly]="!superCompany"
+                         name="trxdiaria" formControlName="trxdaylimitNum" pTooltip = {{MESSAGES.TRXDAYLIMIT}} tooltipPosition="right"
+                         maxlength="19">
+                </div>
+
+                <div class="input-content">
+                  <label class="label-form required">Límite trx mensual: </label>
+                  <input pInputText placeholder="Ingrese límite de trx mensual"  type="number" [required]="true" [readonly]="!superCompany"
+                         name="trxmensual" formControlName="trxmonthlimitNum" pTooltip = {{MESSAGES.TRXMONTLIMIT}} tooltipPosition="right"
+                         maxlength="19">
+                </div>
+
+                <div class="input-content">
+                  <label class="label-form required">Límite trx total: </label>
+                  <input pInputText placeholder="Ingrese límite de trx total"  type="number" [required]="true" [readonly]="!superCompany"
+                         name="trxtotal" formControlName="trxtotallimitNum" pTooltip = {{MESSAGES.TRXTOTALLIMIT}} tooltipPosition="right"
+                         maxlength="19">
+                </div>
+
+              </p-fieldset>
+
+              <p-fieldset legend="Contador de transacciones" *ngIf="!isNewCompany">
+
+                <div class="input-content">
+                  <label class="label-form">Trx del dia: </label>
+                  <input pInputText  type="number" [readonly]="true"
+                         name="trxdiaria" formControlName="trxdaycountNum">
+                </div>
+
+                <div class="input-content">
+                  <label class="label-form">Trx del mes: </label>
+                  <input pInputText type="number" [readonly]="true"
+                         name="trxmensual" formControlName="trxmonthcountNum">
+                </div>
+
+                <div class="input-content">
+                  <label class="label-form">Trx totales: </label>
+                  <input pInputText type="number" [readonly]="true"
+                         name="trxtotal" formControlName="trxtotalcountNum">
+                </div>
+
+              </p-fieldset>
+
+            </div>
+          </div>
+
+        </p-panel>
+        <div style="justify-content: center; display: flex">
+          <mat-card-actions style="width: 100%; justify-content: center">
+            <button mat-raised-button color="primary" class="boton-style" type="submit" [disabled]="!empresaFormGroup.valid">
+              <mat-icon>save</mat-icon>
+              <b>Guardar</b>
+            </button>
+            <button mat-raised-button color="primary" class="boton-style" (click)="navigateCompanyList()" type="reset">
+              <mat-icon>cancel</mat-icon>
+              <b>Cancelar</b>
+            </button>
+          </mat-card-actions>
+        </div>
+      </form>
+
+    </div>
+  </mat-card-content>
+</mat-card>
+
+
+

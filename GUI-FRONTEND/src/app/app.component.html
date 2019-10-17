@@ -1,0 +1,194 @@
+<cabecera (sidenavOpen)="toggleSidevarButton()"></cabecera>
+
+<mat-drawer-container class="sidenav-container" >
+  <mat-drawer #drawer class="sidenav" [mode]="isResponsive() ? 'side' : 'over'"
+              [opened]="isResponsive()" *ngIf="isSelectedCompany$| async as isSelectedCompany" >
+    <nav dropdown>
+
+      <span mat-menu-item routerLink="/home" routerLinkActive="active"
+            (click)="toggleSidevar()" style="margin-top: 10px; color: white">
+            <mat-icon style="color: white" mat-list-icon>home</mat-icon>
+            <span style="vertical-align: middle; margin-left: 5px"><strong>Home</strong></span>
+      </span>
+
+      <mat-accordion [multi]="true">
+        <mat-expansion-panel *ngIf="verMenuAdministracion()" [expanded]="true" [style.background]="'#1A237E'">
+          <mat-expansion-panel-header >
+            <mat-panel-title>
+              <mat-icon style="color: white" mat-list-icon>work</mat-icon>
+              <span style="vertical-align: middle; margin-left: 5px; color: white;"><strong>Administracion</strong></span>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <span *ngIf="consultarEmpresaPerm()" mat-menu-item routerLink="/companyList" routerLinkActive="active"
+                (click)="toggleSidevar()" style="margin-top: 10px; color: white">
+              <mat-icon style="color: white" mat-list-icon>business</mat-icon>
+              <span style="vertical-align: middle; margin-left: 5px"><strong>Empresas</strong></span>
+          </span>
+
+          <span *ngIf="consultarRolPerm()" mat-menu-item routerLink="/rolList" routerLinkActive="active" (click)="toggleSidevar()" style="margin-top: 10px; color: white">
+              <mat-icon style="color: white" mat-list-icon>lock_open</mat-icon>
+              <span style="vertical-align: middle; margin-left: 5px"><strong>Roles</strong></span>
+          </span>
+
+          <span *ngIf="consultarUsuarioPerm()" mat-menu-item routerLink="/userList" routerLinkActive="active"
+                (click)="toggleSidevar()" style="margin-top: 10px; color: white">
+              <mat-icon style="color: white" mat-list-icon>people</mat-icon>
+              <span style="vertical-align: middle; margin-left: 5px"><strong>Usuarios</strong></span>
+          </span>
+
+          <span *ngIf="isSuperCompany()" mat-menu-item routerLink="/audit" routerLinkActive="active"
+                (click)="toggleSidevar()" style="margin-top: 10px; color: white">
+              <mat-icon style="color: white" mat-list-icon>assignment</mat-icon>
+              <span style="vertical-align: middle; margin-left: 5px"><strong>Auditoria</strong></span>
+          </span>
+
+        </mat-expansion-panel>
+
+        <mat-expansion-panel *ngIf="verMenuConsultas()" [expanded]="true" [style.background]="'#1A237E'">
+          <mat-expansion-panel-header >
+            <mat-panel-title>
+              <mat-icon style="color: white" mat-list-icon>assignment</mat-icon>
+              <span style="vertical-align: middle; margin-left: 5px; color: white;"><strong>Consultas</strong></span>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <span *ngIf="consultarGenOrdenPagoPerm()" mat-menu-item routerLink="/logDraftop" routerLinkActive="active"
+                (click)="toggleSidevar()" style="margin-top: 10px; color: white">
+              <mat-icon style="color: white" mat-list-icon>chrome_reader_mode</mat-icon>
+              <span style="vertical-align: middle; margin-left: 5px"><strong>Generacion Orden de pago</strong></span>
+          </span>
+
+          <span *ngIf="consultarComprobantePagosPerm()" mat-menu-item routerLink="/paymentVoucher" routerLinkActive="active"
+                (click)="toggleSidevar()" style="margin-top: 10px; color: white">
+              <mat-icon style="color: white" mat-list-icon>insert_drive_file</mat-icon>
+              <span style="vertical-align: middle; margin-left: 5px"><strong>Comprobantes de pagos</strong></span>
+          </span>
+
+          <span *ngIf="consultarRegistroPagoPerm()" mat-menu-item routerLink="/logPayment" routerLinkActive="active" (click)="toggleSidevar()" style="margin-top: 10px; color: white">
+              <mat-icon style="color: white" mat-list-icon>event_note</mat-icon>
+              <span style="vertical-align: middle; margin-left: 5px"><strong>Registro de Pagos</strong></span>
+          </span>
+
+          <span *ngIf="consultarRegistroNotifPerm()" mat-menu-item routerLink="/logNotification" routerLinkActive="active"
+                (click)="toggleSidevar()" style="margin-top: 10px; color: white">
+              <mat-icon style="color: white" mat-list-icon>notifications</mat-icon>
+              <span style="vertical-align: middle; margin-left: 5px"><strong>Registro de Notificaciones</strong></span>
+          </span>
+
+          <span *ngIf="consultarRegistroMtsPerm()" mat-menu-item routerLink="/logMts" routerLinkActive="active"
+                (click)="toggleSidevar()" style="margin-top: 10px; color: white">
+              <mat-icon style="color: white" mat-list-icon>credit_card</mat-icon>
+              <span style="vertical-align: middle; margin-left: 5px"><strong>Registro de Transacciones</strong></span>
+          </span>
+
+          <span *ngIf="consultarRegistroSesionPerm()" mat-menu-item routerLink="/logSession" routerLinkActive="active"
+                (click)="toggleSidevar()" style="margin-top: 10px; color: white">
+              <mat-icon style="color: white" mat-list-icon>assignment_ind</mat-icon>
+              <span style="vertical-align: middle; margin-left: 5px"><strong>Registro de Inicio de Sesion</strong></span>
+          </span>
+
+          <span *ngIf="consultarRegistroMsjReceivedPerm()" mat-menu-item routerLink="/smsLogMessage" routerLinkActive="active"
+                (click)="toggleSidevar()" style="margin-top: 10px; color: white">
+              <mat-icon style="color: white" mat-list-icon>message</mat-icon>
+              <span style="vertical-align: middle; margin-left: 5px"><strong>Mensajes Recibidos</strong></span>
+          </span>
+
+        </mat-expansion-panel>
+        <mat-expansion-panel  *ngIf="verMenuOrdenPago()"  [expanded]="true" [style.background]="'#1A237E'" [hideToggle]="false">
+
+          <mat-expansion-panel-header>
+
+            <mat-panel-title>
+              <mat-icon style="color: white" mat-list-icon>receipt</mat-icon>
+              <span style="vertical-align: middle; margin-left: 5px; color: white;"><strong>Orden de Pago</strong></span>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <span *ngIf="consutarTipoOrdenPagoPerm()" mat-menu-item routerLink="/paymentOrderTypeList" routerLinkActive="active"
+                (click)="toggleSidevar()" style="margin-top: 10px; color: white">
+              <mat-icon style="color: white" mat-list-icon>filter_list</mat-icon>
+              <span style="vertical-align: middle; margin-left: 5px"><strong>Tipo de Orden de Pago</strong></span>
+          </span>
+
+          <span *ngIf="consutarWorkflowPerm()" mat-menu-item routerLink="/workflowList" routerLinkActive="active"
+                (click)="toggleSidevar()" style="margin-top: 10px; color: white">
+              <mat-icon style="color: white" mat-list-icon>assignment</mat-icon>
+              <span style="vertical-align: middle; margin-left: 5px"><strong>Workflows</strong></span>
+          </span>
+
+          <span *ngIf="modificarBorradoresPerm()" mat-menu-item routerLink="/quickdraftEdit" routerLinkActive="active"
+                (click)="toggleSidevar()" style="margin-top: 10px; color: white">
+              <mat-icon style="color: white" mat-list-icon>swap_horiz</mat-icon>
+              <span (click)="toggleSidevar()" style="vertical-align: middle; margin-left: 5px"><strong>Borrador Rápido</strong></span>
+          </span>
+
+          <span *ngIf="consutarBorradoresPerm()" mat-menu-item routerLink="/draftList" routerLinkActive="active"
+                (click)="toggleSidevar()" style="margin-top: 10px; color: white">
+              <mat-icon style="color: white" mat-list-icon>swap_horiz</mat-icon>
+              <span (click)="toggleSidevar()" style="vertical-align: middle; margin-left: 5px"><strong>Borradores</strong></span>
+          </span>
+
+          <span *ngIf="consultarOrdenDePago()" mat-menu-item routerLink="/paymentOrderList" routerLinkActive="active"
+                (click)="toggleSidevar()" style="margin-top: 10px; color: white">
+              <mat-icon style="color: white" mat-list-icon>border_color</mat-icon>
+              <span style="vertical-align: middle; margin-left: 5px"><strong>Ordenes de Pago</strong></span>
+          </span>
+
+          <span *ngIf="consultarBeneficiario()" mat-menu-item routerLink="/beneficiariosList" routerLinkActive="active"
+                 (click)="toggleSidevar()" style="margin-top: 10px; color: white">
+              <mat-icon style="color: white" mat-list-icon>content_paste</mat-icon>
+              <span style="vertical-align: middle; margin-left: 5px"><strong>Beneficiarios</strong></span>
+          </span>
+
+        </mat-expansion-panel>
+
+        <mat-expansion-panel *ngIf="verMenuSistema()" [style.background]="'#1A237E'">
+
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <mat-icon style="color: white" mat-list-icon>settings_applications</mat-icon>
+              <span style="vertical-align: middle; margin-left: 5px; color: white;"><strong>Sistema</strong></span>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <span *ngIf="consultarSystemParameter()" mat-menu-item routerLink="/systemparameterList" routerLinkActive="active"
+                (click)="toggleSidevar()" style="margin-top: 10px; color: white">
+              <mat-icon style="color: white" mat-list-icon>build</mat-icon>
+              <span style="vertical-align: middle; margin-left: 5px"><strong>Parámetros del Sistema</strong></span>
+          </span>
+
+          <span *ngIf="consultarProceso()" mat-menu-item routerLink="/processList" routerLinkActive="active"
+                (click)="toggleSidevar()" style="margin-top: 10px; color: white">
+              <mat-icon style="color: white" mat-list-icon>label</mat-icon>
+              <span style="vertical-align: middle; margin-left: 5px"><strong>Procesos</strong></span>
+          </span>
+
+          <span *ngIf="consultarCodigoEvento()" mat-menu-item routerLink="/eventCodeList" routerLinkActive="active"
+                (click)="toggleSidevar()" style="margin-top: 10px; color: white">
+              <mat-icon style="color: white" mat-list-icon>event_note</mat-icon>
+              <span style="vertical-align: middle; margin-left: 5px"><strong>Código de Eventos</strong></span>
+          </span>
+          <span *ngIf="modificarEjemploPlantillaPerm()" mat-menu-item routerLink="/templateDocument" routerLinkActive="active"
+                (click)="toggleSidevar()" style="margin-top: 10px; color: white">
+              <mat-icon style="color: white" mat-list-icon>class</mat-icon>
+              <span style="vertical-align: middle; margin-left: 5px"><strong>Documentación de Plantilla</strong></span>
+          </span>
+        </mat-expansion-panel>
+
+      </mat-accordion>
+
+    </nav>
+
+  </mat-drawer>
+  <div class="sidenav-content" >
+    <router-outlet (activate)="onActivate() " id="drawer-container" ></router-outlet>
+
+    <div class="td-layout-footer" style="padding-left: 20px; padding-top: 15%; padding-bottom: 15%" fxLayout="row" fxLayoutAlign="end end">
+      <span style="color: #59547e; font-family: Roboto-Regular">Desarrollado por
+        <a href="http://www.globalsi.com.py" class="text-nodecoration tc-teal-600" target="_blank">Global S.I.</a> © 2018</span>
+    </div>
+
+  </div>
+
+</mat-drawer-container>

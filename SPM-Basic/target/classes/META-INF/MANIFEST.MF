@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Implementation-Title: SPM-Basic
+Implementation-Version: 1.0
+Built-By: global
+Implementation-Vendor-Id: py.com.global.spm
+Build-Jdk: 1.8.0_191
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/GOP/SPM-Basic
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Global Soluciones Inteligentes S.A.
+

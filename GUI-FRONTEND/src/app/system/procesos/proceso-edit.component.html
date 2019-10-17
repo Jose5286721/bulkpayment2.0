@@ -1,0 +1,75 @@
+<div *ngIf="loading" class="spinner-block">
+  <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+</div>
+
+<mat-card>
+  <mat-card-header class="header-page">
+    <mat-card-title style="color: #3f51b5;">
+      <h1>Proceso</h1>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-list>
+    <mat-divider class="dividir"></mat-divider>
+  </mat-list>
+
+  <p-growl [(value)]="msgs"></p-growl>
+
+  <mat-card-content fxLayout="column" fxLayoutAlign="center center">
+    <div class="content-form">
+      <form class="form-style" [formGroup]="processFormGroup" (ngSubmit)="saveProcess()">
+
+        <p-panel [header]="accionTitle">
+
+          <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-md-6">
+              <div class="input-content">
+                <label class="label-form required">Id: </label>
+                <input pInputText placeholder="" type="text" [required]="true"
+                       name="idprocessPk" id="idprocessPk" formControlName="idprocessPk" [readonly]="true">
+              </div>
+            </div>
+
+            <div class="ui-g-12 ui-md-6">
+              <div class="input-content">
+                <label class="label-form">Nombre: </label>
+                <input pInputText placeholder=""
+                       name="processnameChr" formControlName="processnameChr" [readonly]="true">
+              </div>
+            </div>
+
+
+          </div>
+
+          <div class="ui-g ui-fluid">
+
+            <div class="ui-g-12 ui-md-6">
+              <div class="input-content">
+                <label class="label-form">Descripción: </label>
+                <textarea pInputTextarea placeholder="Ingrese descripción" maxlength="100"
+                          name="descripcion" formControlName="descriptionChr">
+                    </textarea>
+              </div>
+            </div>
+
+          </div>
+
+
+        </p-panel>
+        <div style="justify-content: center; display: flex">
+          <mat-card-actions style="width: 100%; justify-content: center">
+            <button mat-raised-button color="primary" class="boton-style" type="submit"
+                    [disabled]="!processFormGroup.valid">
+              <mat-icon>save</mat-icon>
+              <b>Guardar</b>
+            </button>
+            <button mat-raised-button color="primary" class="boton-style" (click)="navigateProcesoList()" type="reset">
+              <mat-icon>cancel</mat-icon>
+              <b>Cancelar</b>
+            </button>
+          </mat-card-actions>
+        </div>
+      </form>
+
+    </div>
+  </mat-card-content>
+</mat-card>

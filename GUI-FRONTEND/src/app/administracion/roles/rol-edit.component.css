@@ -1,0 +1,11 @@
+p-checkbox{
+  margin-left: 25%;
+}
+
+:host>>> .ui-growl{
+  top: 100px;
+}
+
+:host>>> .ui-orderlist-controls{
+  display: none;
+}

@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Implementation-Title: Module-Mfs
+Implementation-Version: 1.0
+Built-By: global
+Implementation-Vendor-Id: py.com.global.spm
+Build-Jdk: 1.8.0_191
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/GOP/Module-Mfs
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Global Soluciones Inteligentes S.A.
+

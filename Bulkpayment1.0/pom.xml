@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>GOP1.0</artifactId>
+	<groupId>py.com.global.spm</groupId>
+	<version>1.0</version>
+	<packaging>pom</packaging>
+	<modules>
+		<module>SPM-Model</module>
+		<module>SPM-Domain</module>
+		<module>SPM-NC-Client</module>
+		<module>SPM-MTS-ClientAxis</module>
+		<module>SPM-MTS-GUI</module>
+		<module>SPM-Model-ear</module>
+		<module>SPM-MTS-Client</module>
+		<module>SPM-CSVImporter</module>
+        <module>SPM-CoreServices</module>
+		<module>SPM-SMSManager</module>
+    </modules>
+	<repositories>
+		<repository>
+			<id>CENTRAL_repo</id>
+			<url>http://central.maven.org/maven2/</url>
+			<name>Maven Central</name>
+		</repository>
+		<repository>
+			<id>JBoss_Releases</id>
+			<url>https://repository.jboss.org/nexus/content/repositories/releases/</url>
+			<name>JBoss Releases</name>
+		</repository>
+		<repository>
+			<id>redhat repo</id>
+			<url>https://maven.repository.redhat.com/ga/</url>
+		</repository>
+	</repositories>
+	
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+
+	<organization>
+		<name>Global Soluciones Inteligentes S.A.</name>
+		<url>http://www.globalsi.com.py/</url>
+	</organization>
+
+</project>

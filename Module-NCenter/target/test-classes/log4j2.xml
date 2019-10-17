@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration statusCode="INFO">
+	<Appenders>
+		<Console name="CONSOLE" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d %-5p [%tid-%c{1}] %m%n" />
+		</Console>
+		<RollingFile name="FILELOGGER"
+			fileName="/opt/dev/logs/module-ncenter-info.log"
+			filePattern="/opt/dev/logs/module-ncenter-%d{yyyy-MM-dd}.log">
+			<PatternLayout pattern="%d %-5p [%tid-%c{1}] %m%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1"
+					modulate="true" />
+			</Policies>
+		</RollingFile>
+	</Appenders>
+	<Loggers>
+		<Logger name="com.global" level="debug" additivity="true">
+			<appender-ref ref="FILELOGGER" level="info" />
+		</Logger>
+		<Root level="info" additivity="false">
+			<appender-ref ref="CONSOLE" />
+		</Root>
+	</Loggers>
+</Configuration>

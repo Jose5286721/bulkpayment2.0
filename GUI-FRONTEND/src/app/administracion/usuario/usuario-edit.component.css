@@ -1,0 +1,7 @@
+:host>>> .ui-growl{
+  top: 100px;
+}
+
+:host>>> .ui-panel-footer{
+  display: none !important;
+}

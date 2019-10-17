@@ -1,0 +1,33 @@
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <p-growl [(value)]="msgs" life="5000"></p-growl>
+    <mat-card style="margin-top: 10%; width: 400px;height: 500px">
+      <div fxLayout="row" fxLayoutAlign="center center" class="text-login">
+        <strong>BULKPAYMENT</strong>
+      </div>
+      <form #loginForm (ngSubmit)="login(username.value, password.value, captchaValue.value)" style="margin-top: 15%">
+        <mat-card-content>
+          <mat-form-field style="width: 100%">
+            <input matInput #username placeholder="Email" required minlength="4"/>
+            <mat-icon matSuffix>person</mat-icon>
+          </mat-form-field>
+          <mat-form-field style="width: 100%">
+            <input matInput #password placeholder="Contraseña" required [type]="hide ? 'password' : 'text'">
+            <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+            <mat-hint *ngIf="errorMessageEmail()" [ngStyle]="{'color': 'red'}" align="start">{{errorMessageEmail()}}</mat-hint>
+          </mat-form-field>
+          <div *ngIf="!isCaptchaLoading">
+            <img [src]="getImageCaptcha()"  alt="s" style="display: block">
+          </div>
+          <mat-form-field style="width: 100%">
+            <input matInput #captchaValue placeholder="Código de seguridad" required >
+          </mat-form-field>
+        </mat-card-content>
+        <mat-card-actions fxLayout="column" fxLayoutAlign="center center">
+          <button mat-raised-button type="submit" [disabled]="!loginForm.checkValidity()" >Iniciar Sesion</button>
+          <button mat-button style="margin-top: 10px" *ngIf="badCredentials" type="reset" (click)="passwordRecover(username.value)">Recuperar contraseña</button>
+        </mat-card-actions>
+      </form>
+    </mat-card>
+
+  </div>
+

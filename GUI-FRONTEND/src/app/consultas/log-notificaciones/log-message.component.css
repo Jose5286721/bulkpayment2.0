@@ -1,0 +1,7 @@
+.tsas{
+  white-space: normal !important;
+  max-width: 90%;
+}
+.ui-dropdown .ui-dropdown-label{
+  white-space: normal !important;
+}

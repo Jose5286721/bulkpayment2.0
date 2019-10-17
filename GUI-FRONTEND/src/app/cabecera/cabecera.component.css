@@ -1,0 +1,23 @@
+.example-icon {
+  padding: 0 14px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.toolbar-principal{
+  padding: 0 0 !important;
+  position: relative;
+  height: 90px;
+  /*900*/
+  background-color: #1A237E;
+  z-index: 100000 !important;
+  top: 0px;
+}
+.menu-but{
+  color: white;
+  border-radius: 0 !important;
+  margin-left: 5px;
+  margin-top: 10px;
+}
